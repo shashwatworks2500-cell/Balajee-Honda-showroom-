@@ -2,6 +2,7 @@ import type {
   CategoryDefinition,
   ContactChannels,
   DealershipProfile,
+  ImageAsset,
   OpeningHours,
   PostalAddress,
   ServiceOffering,
@@ -10,9 +11,9 @@ import type {
 /**
  * Verified business data for Balajee Honda.
  *
- * ONLY the name, address and landmarks below are verified. Every other field
- * is null or empty and MUST stay that way until the dealership supplies the
- * real value. Filling any of these with a plausible guess would put wrong
+ * Verified so far: the business name, the address, the landmarks and the
+ * showroom phone number. Every other field is null or empty and MUST stay that
+ * way until the dealership supplies the real value. Filling any of these with a plausible guess would put wrong
  * information in front of customers — a wrong phone number sends them to a
  * stranger, wrong hours send them to a closed showroom.
  *
@@ -54,7 +55,9 @@ export const ADDRESS_LINES: string[] = [
 /* ---- awaiting verification --------------------------------------- */
 
 export const CONTACT: ContactChannels = {
-  phone: null, // [REQUIRES VERIFIED CONTENT]
+  /** Verified: supplied by the dealership. */
+  phone: "8810789101",
+  phoneE164: "+918810789101",
   whatsapp: null, // [REQUIRES VERIFIED CONTENT]
   email: null, // [REQUIRES VERIFIED CONTENT]
   mapUrl: null, // [REQUIRES VERIFIED CONTENT] — supplied URL only
@@ -84,6 +87,16 @@ export const GENUINE_PARTS_TEXT: string | null = null; // [REQUIRES VERIFIED CON
 
 /** What a test ride involves here — booking needed, what to bring. */
 export const TEST_RIDE_NOTE: string | null = null; // [REQUIRES VERIFIED CONTENT]
+
+/**
+ * The supplied Balajee Honda logo.
+ *
+ * The artwork was provided by the dealership and must be used as-is — never
+ * redrawn, recoloured, distorted or given effects. Drop the supplied file into
+ * `public/brand/` and fill this in; until then the header and footer fall back
+ * to a typographic lockup rather than showing a broken or approximated mark.
+ */
+export const BRAND_LOGO: ImageAsset | null = null; // [REQUIRES SUPPLIED ASSET FILE]
 
 /* ---- categories --------------------------------------------------- */
 
@@ -127,6 +140,7 @@ export const has = {
   genuineParts: GENUINE_PARTS_TEXT !== null,
   privacyPolicy: PRIVACY_POLICY_TEXT !== null,
   testRideNote: TEST_RIDE_NOTE !== null,
+  brandLogo: BRAND_LOGO !== null,
 } as const;
 
 /** True when any contact channel can actually be actioned by a visitor. */
@@ -155,9 +169,16 @@ export const DAY_NAMES = [
   "Saturday",
 ] as const;
 
-/** Display form of a phone number. Returns null when unverified. */
+/** Dial link. Returns null when unverified. */
 export function phoneHref(): string | null {
   return CONTACT.phone ? `tel:${CONTACT.phone}` : null;
+}
+
+/** Readable grouping for an Indian mobile number: 88107 89101. */
+export function phoneDisplay(): string | null {
+  if (!CONTACT.phone) return null;
+  const digits = CONTACT.phone.replace(/\D/g, "");
+  return digits.length === 10 ? `${digits.slice(0, 5)} ${digits.slice(5)}` : CONTACT.phone;
 }
 
 export function whatsappHref(): string | null {

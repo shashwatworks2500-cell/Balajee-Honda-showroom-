@@ -19,6 +19,7 @@ import {
   PROFILE,
   TEST_RIDE_NOTE,
   has,
+  phoneDisplay,
   phoneHref,
 } from "@/lib/site";
 
@@ -165,7 +166,7 @@ export function TestRideBand() {
                 external
                 variant="secondaryOnInk"
                 size="block"
-                aria-label={`Call ${BUSINESS_NAME} on ${CONTACT.phone}`}
+                aria-label={`Call ${BUSINESS_NAME} on ${phoneDisplay()}`}
               >
                 <Phone aria-hidden="true" className="size-4" />
                 Call the showroom
@@ -264,7 +265,7 @@ export function VisitSection() {
                   external
                   variant="secondary"
                   size="compact"
-                  aria-label={`Call ${BUSINESS_NAME} on ${CONTACT.phone}`}
+                  aria-label={`Call ${BUSINESS_NAME} on ${phoneDisplay()}`}
                 >
                   <Phone aria-hidden="true" className="size-4" />
                   Call

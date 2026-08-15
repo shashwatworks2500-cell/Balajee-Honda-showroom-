@@ -16,6 +16,7 @@ import {
   OPENING_HOURS,
   has,
   hasAnyContactChannel,
+  phoneDisplay,
   phoneHref,
   whatsappHref,
 } from "@/lib/site";
@@ -60,7 +61,7 @@ export default function ContactPage() {
                       external
                       size="block"
                       className="sm:w-auto"
-                      aria-label={`Call ${BUSINESS_NAME} on ${CONTACT.phone}`}
+                      aria-label={`Call ${BUSINESS_NAME} on ${phoneDisplay()}`}
                     >
                       <Phone aria-hidden="true" className="size-4" />
                       Call the showroom
@@ -129,8 +130,11 @@ export default function ContactPage() {
                         <PlateRow
                           label="Phone"
                           value={
-                            <a href={phoneHref() ?? undefined} className="hover:underline">
-                              {CONTACT.phone}
+                            <a
+                              href={phoneHref() ?? undefined}
+                              className="inline-flex min-h-11 items-center hover:underline"
+                            >
+                              {phoneDisplay()}
                             </a>
                           }
                         />
@@ -139,7 +143,10 @@ export default function ContactPage() {
                         <PlateRow
                           label="Email"
                           value={
-                            <a href={`mailto:${CONTACT.email}`} className="hover:underline">
+                            <a
+                              href={`mailto:${CONTACT.email}`}
+                              className="inline-flex min-h-11 items-center hover:underline"
+                            >
                               {CONTACT.email}
                             </a>
                           }

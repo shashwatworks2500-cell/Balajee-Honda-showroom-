@@ -124,8 +124,10 @@ export interface OpeningHours {
 }
 
 export interface ContactChannels {
-  /** E.164, e.g. "+915852000000". Null until verified. */
+  /** National 10-digit number as supplied by the dealership. Null until verified. */
   phone: string | null;
+  /** Same number in E.164, used for structured data. */
+  phoneE164: string | null;
   /** E.164 digits for wa.me. Null until a business number is verified. */
   whatsapp: string | null;
   email: string | null;

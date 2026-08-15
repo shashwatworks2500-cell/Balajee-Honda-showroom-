@@ -101,7 +101,7 @@ export function dealerSchema(siteUrl?: string): JsonLd {
       description: LANDMARKS.join(". "),
     };
   }
-  if (has.phone) schema.telephone = CONTACT.phone;
+  if (has.phone) schema.telephone = CONTACT.phoneE164 ?? CONTACT.phone;
   if (has.email) schema.email = CONTACT.email;
   if (has.map) schema.hasMap = CONTACT.mapUrl;
   if (has.geo && CONTACT.geo) {

@@ -10,7 +10,7 @@ import { PlateRow, PlateRows, SpecPlate, SpecStrip } from "@/components/ui/spec-
 import { formatEmi, formatPrice, keySpecRows, priceQualifierLabel, specRows } from "@/lib/format";
 import { MODELS, getModel, getRelatedModels } from "@/lib/models";
 import { modelMetadata, modelSchema } from "@/lib/seo";
-import { BUSINESS_NAME, CATEGORIES, CONTACT, has, phoneHref } from "@/lib/site";
+import { BUSINESS_NAME, CATEGORIES, has, phoneDisplay, phoneHref } from "@/lib/site";
 
 export function generateStaticParams() {
   return MODELS.map((model) => ({ model: model.slug }));
@@ -135,7 +135,7 @@ export default async function ModelPage({ params }: PageProps<"/models/[model]">
                   external
                   variant="secondary"
                   size="block"
-                  aria-label={`Call ${BUSINESS_NAME} on ${CONTACT.phone}`}
+                  aria-label={`Call ${BUSINESS_NAME} on ${phoneDisplay()}`}
                 >
                   <Phone aria-hidden="true" className="size-4" />
                   Call the showroom

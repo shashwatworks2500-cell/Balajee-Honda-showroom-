@@ -1,0 +1,6 @@
+Drop the supplied Balajee Honda logo file here, then register it as
+BRAND_LOGO in lib/site.ts with its real intrinsic width and height.
+
+The artwork must be used as supplied: no redrawing, recolouring, distortion
+or effects. The Logo component renders it with object-contain and a fixed
+height so the aspect ratio is preserved.

@@ -12,6 +12,7 @@ import {
   LANDMARKS,
   enquiryDeliveryConfigured,
   has,
+  phoneDisplay,
   phoneHref,
 } from "@/lib/site";
 
@@ -94,7 +95,7 @@ export function EnquiryBlock({
             external
             variant={isService ? "service" : "primary"}
             size="compact"
-            aria-label={`Call ${BUSINESS_NAME} on ${CONTACT.phone}`}
+            aria-label={`Call ${BUSINESS_NAME} on ${phoneDisplay()}`}
           >
             <Phone aria-hidden="true" className="size-4" />
             Call the showroom

@@ -8,8 +8,9 @@ import { MapPin, Phone } from "lucide-react";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/layout";
+import { Logo } from "@/components/ui/logo";
 import { PRIMARY_NAV } from "@/lib/nav";
-import { ADDRESS, BUSINESS_DESCRIPTOR, BUSINESS_NAME, CONTACT, OPENING_HOURS, has, phoneHref } from "@/lib/site";
+import { ADDRESS, BUSINESS_NAME, OPENING_HOURS, has, phoneDisplay, phoneHref } from "@/lib/site";
 import { DAY_NAMES } from "@/lib/site";
 import { formatTime } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -40,12 +41,12 @@ export function SiteHeader() {
       <div
         className={cn(
           "on-ink overflow-hidden bg-ink text-on-ink-2 transition-[max-height,opacity] duration-250 ease-[var(--ease-enter)]",
-          condensed ? "max-h-0 opacity-0" : "max-h-16 opacity-100",
+          condensed ? "max-h-0 opacity-0" : "max-h-20 opacity-100",
         )}
         aria-hidden={condensed}
       >
         <Container>
-          <div className="flex h-9 items-center justify-between gap-6 text-[0.75rem]">
+          <div className="flex h-11 items-center justify-between gap-6 text-[0.75rem] sm:h-9">
             <p className="t-data flex min-w-0 items-center gap-2 truncate">
               <MapPin aria-hidden="true" className="size-3.5 shrink-0" />
               <span className="truncate">
@@ -64,10 +65,10 @@ export function SiteHeader() {
               {has.phone ? (
                 <a
                   href={phoneHref() ?? undefined}
-                  className="t-data flex items-center gap-2 text-on-ink hover:underline"
+                  className="t-data -mr-2 flex min-h-11 items-center gap-2 px-2 text-on-ink hover:underline sm:min-h-0"
                 >
                   <Phone aria-hidden="true" className="size-3.5" />
-                  {CONTACT.phone}
+                  {phoneDisplay()}
                 </a>
               ) : null}
             </div>
@@ -84,23 +85,14 @@ export function SiteHeader() {
               condensed ? "h-14" : "h-[4.5rem]",
             )}
           >
-            {/* Lockup: Balajee is the voice, Honda the credential. */}
+            {/* Lockup: the supplied brand mark, or a typographic fallback. */}
             <Link
               href="/"
+              aria-label={`${BUSINESS_NAME} — home`}
               /* min-h keeps the lockup tap target at the 44px floor. */
-              className="group flex min-h-11 shrink-0 flex-col justify-center leading-none"
+              className="group flex min-h-11 shrink-0 items-center"
             >
-              <span className="t-h3 text-[1.125rem] leading-none tracking-tight group-hover:text-signal">
-                {BUSINESS_NAME}
-              </span>
-              <span
-                className={cn(
-                  "t-slug mt-1 text-[0.625rem] transition-opacity",
-                  condensed && "sr-only",
-                )}
-              >
-                {BUSINESS_DESCRIPTOR}
-              </span>
+              <Logo height={condensed ? 32 : 40} descriptorHidden={condensed} />
             </Link>
 
             <nav aria-label="Primary" className="hidden lg:block">

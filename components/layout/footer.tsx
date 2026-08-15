@@ -1,17 +1,18 @@
 import Link from "next/link";
 
 import { Container } from "@/components/ui/layout";
+import { Logo } from "@/components/ui/logo";
 import { FOOTER_NAV } from "@/lib/nav";
 import { formatTime } from "@/lib/format";
 import {
   ADDRESS_LINES,
-  BUSINESS_DESCRIPTOR,
   BUSINESS_NAME,
   CONTACT,
   DAY_NAMES,
   LANDMARKS,
   OPENING_HOURS,
   has,
+  phoneDisplay,
   phoneHref,
 } from "@/lib/site";
 
@@ -26,8 +27,7 @@ export function Footer() {
         <div className="grid gap-12 py-16 lg:grid-cols-[7fr_5fr] lg:gap-16 lg:py-24">
           {/* NAP */}
           <div>
-            <p className="t-h3 text-on-ink">{BUSINESS_NAME}</p>
-            <p className="t-slug mt-1 text-on-ink-2">{BUSINESS_DESCRIPTOR}</p>
+            <Logo height={44} onInk />
 
             <address className="t-data mt-6 not-italic text-[0.875rem] leading-relaxed">
               {ADDRESS_LINES.map((line) => (
@@ -55,15 +55,15 @@ export function Footer() {
                 {has.phone ? (
                   <a
                     href={phoneHref() ?? undefined}
-                    className="t-data block text-[0.875rem] text-on-ink hover:underline"
+                    className="t-data inline-flex min-h-11 items-center text-[0.875rem] text-on-ink hover:underline"
                   >
-                    {CONTACT.phone}
+                    {phoneDisplay()}
                   </a>
                 ) : null}
                 {has.email ? (
                   <a
                     href={`mailto:${CONTACT.email}`}
-                    className="t-data block text-[0.875rem] text-on-ink hover:underline"
+                    className="t-data inline-flex min-h-11 items-center text-[0.875rem] text-on-ink hover:underline"
                   >
                     {CONTACT.email}
                   </a>

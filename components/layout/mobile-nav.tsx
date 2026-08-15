@@ -6,6 +6,7 @@ import { Dialog } from "radix-ui";
 import { MapPin, Menu, Phone, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/ui/logo";
 import { PRIMARY_NAV } from "@/lib/nav";
 import {
   ADDRESS_LINES,
@@ -14,6 +15,7 @@ import {
   CONTACT,
   LANDMARKS,
   has,
+  phoneDisplay,
   phoneHref,
 } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -58,7 +60,7 @@ export function MobileNav() {
           </Dialog.Description>
 
           <div className="flex h-[4.5rem] shrink-0 items-center justify-between border-b border-rule px-5">
-            <span className="t-h3 text-[1.125rem] leading-none">{BUSINESS_NAME}</span>
+            <Logo height={36} />
             <Dialog.Close asChild>
               <button
                 type="button"
@@ -123,7 +125,7 @@ export function MobileNav() {
                   external
                   variant="secondary"
                   size="block"
-                  aria-label={`Call ${BUSINESS_NAME} on ${CONTACT.phone}`}
+                  aria-label={`Call ${BUSINESS_NAME} on ${phoneDisplay()}`}
                 >
                   <Phone aria-hidden="true" className="size-4" />
                   Call

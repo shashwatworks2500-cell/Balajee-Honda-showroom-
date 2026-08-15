@@ -1,12 +1,14 @@
 import Image from "next/image";
 
+import { Phone } from "lucide-react";
+
 import { Ignition } from "@/components/motion/ignition";
 import { Button } from "@/components/ui/button";
 import { Container, Eyebrow } from "@/components/ui/layout";
 import { SpecStrip } from "@/components/ui/spec-plate";
 import { formatPrice, keySpecRows, priceQualifierLabel } from "@/lib/format";
 import { getHeroModel } from "@/lib/models";
-import { ADDRESS, BUSINESS_NAME } from "@/lib/site";
+import { ADDRESS, BUSINESS_NAME, has, phoneDisplay, phoneHref } from "@/lib/site";
 
 /**
  * Hero.
@@ -82,6 +84,19 @@ export function Hero() {
             >
               View models
             </Button>
+            {has.phone ? (
+              <Button
+                href={phoneHref() ?? "#"}
+                external
+                variant="secondaryOnInk"
+                size="block"
+                className="sm:w-auto"
+                aria-label={`Call ${BUSINESS_NAME} on ${phoneDisplay()}`}
+              >
+                <Phone aria-hidden="true" className="size-4" />
+                {phoneDisplay()}
+              </Button>
+            ) : null}
           </div>
 
           {stripItems.length > 0 ? (
