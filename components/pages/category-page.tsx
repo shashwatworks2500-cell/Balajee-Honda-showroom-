@@ -6,7 +6,7 @@ import {
 import { Container, Section } from "@/components/ui/layout";
 import { getModelsByCategory } from "@/lib/models";
 import { CITY } from "@/lib/seo";
-import { BUSINESS_NAME } from "@/lib/site";
+import { AVAILABILITY_NOTE } from "@/lib/site";
 import type { CategoryDefinition } from "@/lib/types";
 
 /**
@@ -24,7 +24,7 @@ export function CategoryPage({ category }: { category: CategoryDefinition }) {
       <ListingHeader
         slug={`${category.slug}/`}
         title={`Honda ${category.label.toLowerCase()} in ${CITY}`}
-        intro={`${category.blurb} Everything below is available at ${BUSINESS_NAME} on Station Road.`}
+        intro={`${category.blurb} ${AVAILABILITY_NOTE}`}
       />
 
       <Section>

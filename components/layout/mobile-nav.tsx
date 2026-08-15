@@ -12,9 +12,9 @@ import {
   ADDRESS_LINES,
   BUSINESS_DESCRIPTOR,
   BUSINESS_NAME,
-  CONTACT,
   LANDMARKS,
   has,
+  mapDestinationHref,
   phoneDisplay,
   phoneHref,
 } from "@/lib/site";
@@ -131,24 +131,17 @@ export function MobileNav() {
                   Call
                 </Button>
               ) : null}
-              {has.map ? (
-                <Button
-                  href={CONTACT.mapUrl ?? "#"}
-                  external
-                  variant="secondary"
-                  size="block"
-                  rel="noopener"
-                  target="_blank"
-                >
-                  <MapPin aria-hidden="true" className="size-4" />
-                  Directions
-                </Button>
-              ) : (
-                <Button href="/contact" variant="secondary" size="block" onClick={close}>
-                  <MapPin aria-hidden="true" className="size-4" />
-                  Visit us
-                </Button>
-              )}
+              <Button
+                href={mapDestinationHref()}
+                external
+                variant="secondary"
+                size="block"
+                rel="noopener"
+                target="_blank"
+              >
+                <MapPin aria-hidden="true" className="size-4" />
+                Directions
+              </Button>
             </div>
           </div>
         </Dialog.Content>

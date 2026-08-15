@@ -8,10 +8,10 @@ import { getModels } from "@/lib/models";
 import {
   ADDRESS_LINES,
   BUSINESS_NAME,
-  CONTACT,
   LANDMARKS,
   enquiryDeliveryConfigured,
   has,
+  mapDestinationHref,
   phoneDisplay,
   phoneHref,
 } from "@/lib/site";
@@ -101,24 +101,17 @@ export function EnquiryBlock({
             Call the showroom
           </Button>
         ) : null}
-        {has.map ? (
-          <Button
-            href={CONTACT.mapUrl ?? "#"}
-            external
-            target="_blank"
-            rel="noopener"
-            variant="secondary"
-            size="compact"
-          >
-            <MapPin aria-hidden="true" className="size-4" />
-            Get directions
-          </Button>
-        ) : (
-          <Button href="/contact" variant="secondary" size="compact">
-            <MapPin aria-hidden="true" className="size-4" />
-            Showroom details
-          </Button>
-        )}
+        <Button
+          href={mapDestinationHref()}
+          external
+          target="_blank"
+          rel="noopener"
+          variant="secondary"
+          size="compact"
+        >
+          <MapPin aria-hidden="true" className="size-4" />
+          Get directions
+        </Button>
       </div>
     </SpecPlate>
   );

@@ -15,7 +15,7 @@ import {
   LANDMARKS,
   OPENING_HOURS,
   has,
-  hasAnyContactChannel,
+  mapDestinationHref,
   phoneDisplay,
   phoneHref,
   whatsappHref,
@@ -52,9 +52,8 @@ export default function ContactPage() {
         <Container>
           <div className="grid gap-10 lg:grid-cols-[7fr_5fr] lg:gap-14">
             <div className="space-y-5">
-              {/* Actions first on mobile. */}
-              {hasAnyContactChannel || has.map ? (
-                <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              {/* Actions first on mobile: call and directions both resolve. */}
+              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                   {has.phone ? (
                     <Button
                       href={phoneHref() ?? "#"}
@@ -67,20 +66,18 @@ export default function ContactPage() {
                       Call the showroom
                     </Button>
                   ) : null}
-                  {has.map ? (
-                    <Button
-                      href={CONTACT.mapUrl ?? "#"}
-                      external
-                      target="_blank"
-                      rel="noopener"
-                      variant="secondary"
-                      size="block"
-                      className="sm:w-auto"
-                    >
-                      <MapPin aria-hidden="true" className="size-4" />
-                      Get directions
-                    </Button>
-                  ) : null}
+                  <Button
+                    href={mapDestinationHref()}
+                    external
+                    target="_blank"
+                    rel="noopener"
+                    variant="secondary"
+                    size="block"
+                    className="sm:w-auto"
+                  >
+                    <MapPin aria-hidden="true" className="size-4" />
+                    Get directions
+                  </Button>
                   {has.whatsapp ? (
                     <Button
                       href={whatsappHref() ?? "#"}
@@ -95,8 +92,7 @@ export default function ContactPage() {
                       WhatsApp
                     </Button>
                   ) : null}
-                </div>
-              ) : null}
+              </div>
 
               <SpecPlate slug="address">
                 <address className="not-italic">

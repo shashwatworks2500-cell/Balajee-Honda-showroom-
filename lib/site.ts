@@ -96,7 +96,22 @@ export const TEST_RIDE_NOTE: string | null = null; // [REQUIRES VERIFIED CONTENT
  * `public/brand/` and fill this in; until then the header and footer fall back
  * to a typographic lockup rather than showing a broken or approximated mark.
  */
-export const BRAND_LOGO: ImageAsset | null = null; // [REQUIRES SUPPLIED ASSET FILE]
+export const BRAND_LOGO: ImageAsset | null = {
+  src: "/brand/balajee-honda-logo-trimmed.png",
+  alt: "Balajee Honda",
+  width: 872,
+  height: 661,
+  source: "dealership",
+};
+
+/**
+ * Shown wherever the catalogue appears. The lineup below comes from Honda's
+ * current published range — which models this showroom holds in stock on any
+ * given day is not something we can assert, so we say so plainly rather than
+ * implying availability.
+ */
+export const AVAILABILITY_NOTE =
+  "Models shown are from Honda's current range. Call the showroom to confirm what is available.";
 
 /* ---- categories --------------------------------------------------- */
 
@@ -179,6 +194,20 @@ export function phoneDisplay(): string | null {
   if (!CONTACT.phone) return null;
   const digits = CONTACT.phone.replace(/\D/g, "");
   return digits.length === 10 ? `${digits.slice(0, 5)} ${digits.slice(5)}` : CONTACT.phone;
+}
+
+/**
+ * Directions destination.
+ *
+ * Uses the dealership's supplied map URL when one exists. Until then it falls
+ * back to a Maps search for the verified postal address — no latitude or
+ * longitude is invented, and swapping in a real URL is a one-line change to
+ * CONTACT.mapUrl.
+ */
+export function mapDestinationHref(): string {
+  if (CONTACT.mapUrl) return CONTACT.mapUrl;
+  const query = encodeURIComponent(`${BUSINESS_NAME}, ${ADDRESS_ONE_LINE}`);
+  return `https://www.google.com/maps/search/?api=1&query=${query}`;
 }
 
 export function whatsappHref(): string | null {

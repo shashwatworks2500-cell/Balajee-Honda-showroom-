@@ -67,6 +67,12 @@ export interface Specifications {
   startType?: string;
 }
 
+/** A specification exactly as the manufacturer publishes it. Never reworded. */
+export interface SpecEntry {
+  label: string;
+  value: string;
+}
+
 export interface Variant {
   name: string;
   price?: Price;
@@ -93,6 +99,11 @@ export interface Model {
   startingPrice?: Price;
   emiFrom?: Emi;
   specs?: Specifications;
+  /**
+   * Manufacturer-published specifications, reproduced verbatim. Preferred over
+   * `specs` for display so no value is ever converted or rounded by us.
+   */
+  publishedSpecs?: SpecEntry[];
   variants?: Variant[];
   colours?: Colour[];
   /** Honda's published feature list, reproduced not paraphrased. */

@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { formatPrice, keySpecRows, priceQualifierLabel } from "@/lib/format";
+import { formatPrice, modelKeySpecs, priceQualifierLabel } from "@/lib/format";
 import type { Model } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -25,7 +25,7 @@ export function ModelCard({
   className?: string;
   priority?: boolean;
 }) {
-  const specs = keySpecRows(model.specs);
+  const specs = modelKeySpecs(model);
   const href = `/models/${model.slug}`;
 
   return (
@@ -50,7 +50,11 @@ export function ModelCard({
 
       <div className="flex flex-1 flex-col p-5">
         <h3 className="t-h3">
-          <Link href={href} className="transition-colors hover:text-signal">
+          <Link
+            href={href}
+            /* Block-level with a 44px minimum so the title is a real target. */
+            className="inline-flex min-h-11 items-center transition-colors hover:text-signal"
+          >
             {model.name}
           </Link>
         </h3>

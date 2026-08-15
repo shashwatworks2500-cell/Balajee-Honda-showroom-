@@ -1,4 +1,4 @@
-import type { Price, Specifications } from "./types";
+import type { Model, Price, Specifications } from "./types";
 
 /** Indian digit grouping, whole rupees. */
 const rupees = new Intl.NumberFormat("en-IN", {
@@ -23,6 +23,25 @@ export function formatEmi(amountPerMonth: number): string {
 export interface SpecRow {
   label: string;
   value: string;
+}
+
+/**
+ * Full specification rows for a model.
+ *
+ * Manufacturer-published entries are used as-is — Honda's own label and its own
+ * value string, never reworded or converted. Structured `specs` supplied by the
+ * dealership are appended after them.
+ */
+export function modelSpecRows(model: Model): SpecRow[] {
+  const published = (model.publishedSpecs ?? []).map((entry) => ({
+    label: entry.label,
+    value: entry.value,
+  }));
+  const seen = new Set(published.map((r) => r.label.toLowerCase()));
+  const structured = specRows(model.specs).filter(
+    (r) => !seen.has(r.label.toLowerCase()),
+  );
+  return [...published, ...structured];
 }
 
 /**
@@ -52,17 +71,12 @@ export function specRows(specs: Specifications | undefined): SpecRow[] {
   return rows;
 }
 
-/** The two or three specs shown on a card. Order reflects buyer priority. */
-export function keySpecRows(specs: Specifications | undefined, limit = 3): SpecRow[] {
-  if (!specs) return [];
-
-  const rows: SpecRow[] = [];
-  if (specs.displacementCc) rows.push({ label: "Engine", value: `${specs.displacementCc} cc` });
-  if (specs.mileageKmpl) rows.push({ label: "Mileage", value: `${specs.mileageKmpl} km/l` });
-  if (specs.kerbWeightKg) rows.push({ label: "Weight", value: `${specs.kerbWeightKg} kg` });
-  if (specs.seatHeightMm) rows.push({ label: "Seat", value: `${specs.seatHeightMm} mm` });
-
-  return rows.slice(0, limit);
+/**
+ * The two or three specs shown on a card and in the hero strip.
+ * Published values win, so a card never shows a number we derived.
+ */
+export function modelKeySpecs(model: Model, limit = 3): SpecRow[] {
+  return modelSpecRows(model).slice(0, limit);
 }
 
 /** "9:30 am" from "09:30". Used only for verified opening hours. */

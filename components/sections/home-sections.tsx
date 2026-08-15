@@ -14,11 +14,12 @@ import {
   ADDRESS_LINES,
   BUSINESS_NAME,
   CATEGORIES,
-  CONTACT,
   LANDMARKS,
   PROFILE,
   TEST_RIDE_NOTE,
+  AVAILABILITY_NOTE,
   has,
+  mapDestinationHref,
   phoneDisplay,
   phoneHref,
 } from "@/lib/site";
@@ -61,11 +62,7 @@ export function FeaturedModels() {
           id="featured-head"
           slug="lineup/"
           title="Two-wheelers at Balajee Honda"
-          intro={
-            models.length > 0
-              ? "A selection from the showroom floor. Every price and specification here comes from Honda or from us."
-              : undefined
-          }
+          intro={models.length > 0 ? AVAILABILITY_NOTE : undefined}
         />
 
         {models.length > 0 ? (
@@ -247,18 +244,16 @@ export function VisitSection() {
             </div>
 
             <div className="mt-6 flex flex-wrap gap-3">
-              {has.map ? (
-                <Button
-                  href={CONTACT.mapUrl ?? "#"}
-                  external
-                  target="_blank"
-                  rel="noopener"
-                  size="compact"
-                >
-                  <MapPin aria-hidden="true" className="size-4" />
-                  Get directions
-                </Button>
-              ) : null}
+              <Button
+                href={mapDestinationHref()}
+                external
+                target="_blank"
+                rel="noopener"
+                size="compact"
+              >
+                <MapPin aria-hidden="true" className="size-4" />
+                Get directions
+              </Button>
               {has.phone ? (
                 <Button
                   href={phoneHref() ?? "#"}

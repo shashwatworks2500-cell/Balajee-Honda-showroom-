@@ -1,40 +1,147 @@
 import type { Category, Model } from "./types";
 
 /**
- * The model registry.
+ * The model catalogue.
  *
- * EMPTY BY DESIGN. No Honda model, specification, price, variant or colour has
- * been verified for this dealership, so nothing is listed. Inventing a lineup
- * would put wrong prices and wrong specifications in front of customers.
+ * Every value here comes from Honda's own published product pages
+ * (honda2wheelersindia.com) and is reproduced verbatim — nothing is inferred,
+ * converted or rounded. Product photography is Honda's official press image for
+ * each model, stored under /public/models.
  *
- * To publish a model, append an entry below. The minimum threshold is a name,
- * a slug, a category and an image — anything less produces a stub page that
- * harms both the visitor and the site's search standing. Every other field is
- * optional and the UI omits what is absent.
+ * What is deliberately ABSENT, and must stay absent until the dealership
+ * supplies it: prices, EMI, variants, colours, mileage figures, feature lists
+ * and stock availability. Add them per-model below; every consuming component
+ * already renders them conditionally.
  *
- * Example shape (commented out — do not uncomment until every value here is
- * confirmed against Honda's published data and the dealership's own pricing):
- *
- *   {
- *     slug: "example-model",
- *     name: "Example Model",
- *     category: "scooter",
- *     image: {
- *       src: "/models/example-model.jpg",
- *       alt: "Honda Example Model in Pearl White, side profile",
- *       width: 1600,
- *       height: 900,
- *       source: "honda",
- *     },
- *     startingPrice: {
- *       amount: 000000,
- *       qualifier: "ex-showroom",
- *       sourceNote: "Balajee Honda",
- *     },
- *     specs: { displacementCc: 000, mileageKmpl: 00 },
- *   }
+ * To publish a model the minimum is a slug, name, category and image.
  */
-export const MODELS: Model[] = [];
+export const MODELS: Model[] = [
+  {
+    slug: "activa110",
+    name: "Honda Activa 110",
+    category: "scooter",
+    image: {
+      src: "/models/activa110.jpg",
+      alt: "Honda Activa 110, side profile",
+      width: 1200,
+      height: 630,
+      source: "honda",
+    },
+    specs: { displacementCc: 109.51 },
+    publishedSpecs: [
+      { label: "Displacement", value: "109.51 cc" },
+      { label: "Max Net Torque", value: "9.05 Nm @ 5500 rpm" },
+      { label: "Starting Method", value: "Smart- Self" },
+    ],
+  },
+  {
+    slug: "activa125",
+    name: "Honda Activa 125",
+    category: "scooter",
+    image: {
+      src: "/models/activa125.jpg",
+      alt: "Honda Activa 125, side profile",
+      width: 1200,
+      height: 630,
+      source: "honda",
+    },
+    specs: { displacementCc: 123.92 },
+    publishedSpecs: [
+      { label: "Displacement", value: "123.92 cc" },
+      { label: "Headlamp", value: "LED DC" },
+      { label: "Battery", value: "12 V, 5.0 Ah" },
+    ],
+  },
+  {
+    slug: "shine-125",
+    name: "Honda Shine 125",
+    category: "motorcycle",
+    image: {
+      src: "/models/shine-125.jpg",
+      alt: "Honda Shine 125, side profile",
+      width: 1200,
+      height: 630,
+      source: "honda",
+    },
+    specs: { displacementCc: 123.94 },
+    publishedSpecs: [
+      { label: "Displacement", value: "123.94 cc" },
+      { label: "Fuel System", value: "PGM-FI" },
+      { label: "Headlamp", value: "Halogen Bulb, DC" },
+    ],
+  },
+  {
+    slug: "livo",
+    name: "Honda Livo",
+    category: "motorcycle",
+    image: {
+      src: "/models/livo.jpg",
+      alt: "Honda Livo, side profile",
+      width: 1200,
+      height: 630,
+      source: "honda",
+    },
+    specs: { displacementCc: 109.51 },
+    publishedSpecs: [
+      { label: "Displacement", value: "109.51 cc" },
+      { label: "Battery", value: "12 V, 4 Ah" },
+      { label: "Headlamp", value: "Halogen Bulb, DC" },
+    ],
+  },
+  {
+    slug: "sp-125",
+    name: "Honda SP 125",
+    category: "motorcycle",
+    image: {
+      src: "/models/sp-125.jpg",
+      alt: "Honda SP 125, side profile",
+      width: 1200,
+      height: 630,
+      source: "honda",
+    },
+    specs: { displacementCc: 123.94 },
+    publishedSpecs: [
+      { label: "Displacement", value: "123.94 cc" },
+      { label: "Headlamp", value: "LED, DC" },
+      { label: "Fuel Tank Capacity", value: "11 L" },
+    ],
+  },
+  {
+    slug: "unicorn",
+    name: "Honda Unicorn 160",
+    category: "motorcycle",
+    image: {
+      src: "/models/unicorn.jpg",
+      alt: "Honda Unicorn 160, side profile",
+      width: 1200,
+      height: 630,
+      source: "honda",
+    },
+    specs: { displacementCc: 162.71 },
+    publishedSpecs: [
+      { label: "Displacement", value: "162.71 cc" },
+      { label: "Headlamp", value: "LED" },
+    ],
+  },
+  {
+    slug: "hornet-2-0",
+    name: "Honda Hornet 2.0",
+    category: "motorcycle",
+    image: {
+      src: "/models/hornet-2-0.jpg",
+      alt: "Honda Hornet 2.0, side profile",
+      width: 1200,
+      height: 630,
+      source: "honda",
+    },
+    publishedSpecs: [
+      { label: "Battery", value: "12 V, 5.0 Ah" },
+      { label: "Fuel Tank Capacity", value: "12 L" },
+      { label: "Headlamp", value: "LED" },
+      { label: "Max Net Torque", value: "15.7 Nm @ 6000 rpm" },
+    ],
+  },
+];
 
 /* ---- queries ------------------------------------------------------ */
 
@@ -52,7 +159,7 @@ export function getModel(slug: string): Model | undefined {
 
 /**
  * Curated by the dealership via the `featured` flag. Falls back to the first
- * few models so the homepage still has product once a lineup exists.
+ * few models so the homepage still has product before curation happens.
  */
 export function getFeaturedModels(limit = 6): Model[] {
   const curated = MODELS.filter((m) => m.featured);
@@ -65,8 +172,8 @@ export function getHeroModel(): Model | undefined {
 }
 
 /**
- * Related models: same category, price-adjacent, never cross-category.
- * A scooter buyer is not shopping motorcycles.
+ * Related models: same category, price-adjacent where prices exist, never
+ * cross-category — a scooter buyer is not shopping motorcycles.
  */
 export function getRelatedModels(model: Model, limit = 3): Model[] {
   const sameCategory = MODELS.filter(

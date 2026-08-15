@@ -6,7 +6,7 @@ import { Ignition } from "@/components/motion/ignition";
 import { Button } from "@/components/ui/button";
 import { Container, Eyebrow } from "@/components/ui/layout";
 import { SpecStrip } from "@/components/ui/spec-plate";
-import { formatPrice, keySpecRows, priceQualifierLabel } from "@/lib/format";
+import { formatPrice, modelKeySpecs, priceQualifierLabel } from "@/lib/format";
 import { getHeroModel } from "@/lib/models";
 import { ADDRESS, BUSINESS_NAME, has, phoneDisplay, phoneHref } from "@/lib/site";
 
@@ -31,7 +31,7 @@ export function Hero() {
               },
             ]
           : []),
-        ...keySpecRows(model.specs, 3).map((s) => ({ label: s.label, value: s.value })),
+        ...modelKeySpecs(model, 3).map((s) => ({ label: s.label, value: s.value })),
       ]
     : [];
 

@@ -7,7 +7,13 @@ import { ModelCard } from "@/components/models/model-card";
 import { Button } from "@/components/ui/button";
 import { Container, Eyebrow, Section, SectionHead } from "@/components/ui/layout";
 import { PlateRow, PlateRows, SpecPlate, SpecStrip } from "@/components/ui/spec-plate";
-import { formatEmi, formatPrice, keySpecRows, priceQualifierLabel, specRows } from "@/lib/format";
+import {
+  formatEmi,
+  formatPrice,
+  modelKeySpecs,
+  modelSpecRows,
+  priceQualifierLabel,
+} from "@/lib/format";
 import { MODELS, getModel, getRelatedModels } from "@/lib/models";
 import { modelMetadata, modelSchema } from "@/lib/seo";
 import { BUSINESS_NAME, CATEGORIES, has, phoneDisplay, phoneHref } from "@/lib/site";
@@ -37,7 +43,7 @@ export default async function ModelPage({ params }: PageProps<"/models/[model]">
   if (!model) notFound();
 
   const category = CATEGORIES.find((c) => c.id === model.category);
-  const allSpecs = specRows(model.specs);
+  const allSpecs = modelSpecRows(model);
   const strip = [
     ...(model.startingPrice
       ? [
@@ -47,7 +53,7 @@ export default async function ModelPage({ params }: PageProps<"/models/[model]">
           },
         ]
       : []),
-    ...keySpecRows(model.specs, 3),
+    ...modelKeySpecs(model, 3),
   ];
   const related = getRelatedModels(model);
 

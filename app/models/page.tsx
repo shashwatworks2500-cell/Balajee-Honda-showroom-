@@ -6,7 +6,7 @@ import {
 import { Container, Section, SectionHead } from "@/components/ui/layout";
 import { getModels, getModelsByCategory } from "@/lib/models";
 import { buildMetadata, CITY, pageTitle } from "@/lib/seo";
-import { BUSINESS_NAME, CATEGORIES } from "@/lib/site";
+import { AVAILABILITY_NOTE, BUSINESS_NAME, CATEGORIES } from "@/lib/site";
 
 export const metadata = buildMetadata({
   title: pageTitle(`Honda Bikes & Scooters in ${CITY}`),
@@ -26,7 +26,7 @@ export default function ModelsPage() {
       <ListingHeader
         slug="models/"
         title={`Honda two-wheelers in ${CITY}`}
-        intro={`Everything we stock at ${BUSINESS_NAME}, grouped by type. Prices and specifications come from Honda and from our showroom.`}
+        intro={`Honda's current two-wheeler range, grouped by type. ${AVAILABILITY_NOTE}`}
       />
 
       {all.length === 0 ? (
