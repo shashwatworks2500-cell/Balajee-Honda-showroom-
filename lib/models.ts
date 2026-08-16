@@ -1,19 +1,20 @@
 import type { Category, Model } from "./types";
 
 /**
- * The model catalogue.
+ * The model catalogue — the mass-market Honda range a Red Wing showroom keeps.
  *
- * Every value here comes from Honda's own published product pages
- * (honda2wheelersindia.com) and is reproduced verbatim — nothing is inferred,
- * converted or rounded. Product photography is Honda's official press image for
- * each model, stored under /public/models.
+ * Names, photography and specifications all come from Honda's own published
+ * product pages and are reproduced verbatim: Honda's label, Honda's value
+ * string, in Honda's order. Nothing here is inferred, converted or rounded.
  *
- * What is deliberately ABSENT, and must stay absent until the dealership
- * supplies it: prices, EMI, variants, colours, mileage figures, feature lists
- * and stock availability. Add them per-model below; every consuming component
+ * BigWing machines (Gold Wing, CBR, CB750 and the rest) are deliberately
+ * absent: listing them would imply stock this showroom has not confirmed.
+ *
+ * Dealership-specific fields — price, EMI, variants, colours, availability —
+ * are still empty and belong to Balajee Honda to supply. Every component
  * already renders them conditionally.
  *
- * To publish a model the minimum is a slug, name, category and image.
+ * Generated from Honda's product pages; re-run the scraper to refresh.
  */
 export const MODELS: Model[] = [
   {
@@ -27,11 +28,34 @@ export const MODELS: Model[] = [
       height: 630,
       source: "honda",
     },
-    specs: { displacementCc: 109.51 },
     publishedSpecs: [
       { label: "Displacement", value: "109.51 cc" },
       { label: "Max Net Torque", value: "9.05 Nm @ 5500 rpm" },
       { label: "Starting Method", value: "Smart- Self" },
+      { label: "Length", value: "1833 mm" },
+      { label: "Width", value: "677 mm" },
+      { label: "Height", value: "1165 mm" },
+      { label: "Wheelbase", value: "1260 mm" },
+      { label: "Ground Clearance", value: "162 mm" },
+      { label: "Seat Length", value: "692 mm" },
+      { label: "Seat Height", value: "764 mm" },
+      { label: "Kerb Weight", value: "106 kg" },
+      { label: "Fuel Tank Capacity", value: "5.3 L" },
+      { label: "Type", value: "4 stroke, SI Engine" },
+      { label: "Max Engine Output", value: "5.88 kW @ 8000 rpm" },
+      { label: "Fuel System", value: "PGM-Fi" },
+      { label: "Bore x Stroke", value: "47.10 mm X 63.1 mm" },
+      { label: "Compression Ratio", value: "10.0 : 1" },
+      { label: "Clutch Type", value: "Automatic (V-Matic)" },
+      { label: "Frame Type", value: "Under Bone" },
+      { label: "Front Suspension", value: "Telescopic" },
+      { label: "Rear Suspension", value: "3 Step Adjustable Unit Swing" },
+      { label: "Battery", value: "12 V, 5.0 Ah (MF)" },
+      { label: "Headlamp", value: "Halogen" },
+      { label: "Smart Key Ignition", value: "Standard Key" },
+      { label: "Charging Socket", value: "Optional" },
+      { label: "Meter Console", value: "Analog" },
+      { label: "Key Type", value: "Standard Key" },
     ],
   },
   {
@@ -45,11 +69,191 @@ export const MODELS: Model[] = [
       height: 630,
       source: "honda",
     },
-    specs: { displacementCc: 123.92 },
     publishedSpecs: [
       { label: "Displacement", value: "123.92 cc" },
       { label: "Headlamp", value: "LED DC" },
       { label: "Battery", value: "12 V, 5.0 Ah" },
+      { label: "Length", value: "1850 mm" },
+      { label: "Width", value: "707 mm" },
+      { label: "Height", value: "1160 mm" },
+      { label: "Wheelbase", value: "1260 mm" },
+      { label: "Ground Clearance", value: "162 mm" },
+      { label: "Seat Length", value: "712 mm" },
+      { label: "Seat Height", value: "765 mm" },
+      { label: "Kerb Weight", value: "107 Kg" },
+      { label: "Fuel Tank Capacity", value: "5.3 L" },
+      { label: "Type", value: "4 stroke, SI Engine" },
+      { label: "Max Engine Output", value: "6.20 kW @ 6500 rpm" },
+      { label: "Max Net Torque", value: "10.5 Nm @ 5000 rpm" },
+      { label: "Fuel System", value: "PGM-FI" },
+      { label: "Bore x Stroke", value: "50.0 mm X 63.1 mm" },
+      { label: "Compression Ratio", value: "10.0 : 1" },
+      { label: "Starting Method", value: "Self/Kick" },
+      { label: "Clutch Type", value: "Automatic Centrifugal Clutch Dry Type" },
+      { label: "Frame Type", value: "Under Bone" },
+      { label: "Front Suspension", value: "Telescopic" },
+      { label: "Rear Suspension", value: "3 Step Adjustable Spring Loaded Hydraulic" },
+      { label: "Key Type", value: "Standard Key" },
+      { label: "Live Mileage", value: "Yes" },
+    ],
+  },
+  {
+    slug: "dio-110",
+    name: "Honda Dio 110",
+    category: "scooter",
+    image: {
+      src: "/models/dio-110.jpg",
+      alt: "Honda Dio 110, side profile",
+      width: 1200,
+      height: 630,
+      source: "honda",
+    },
+    publishedSpecs: [
+      { label: "Fuel Tank Capacity", value: "5.3 L" },
+      { label: "Battery", value: "12 V, 5.0 Ah" },
+      { label: "Type", value: "4 Stroke, SI Engine" },
+      { label: "Length", value: "1808 mm" },
+      { label: "Width", value: "677 mm" },
+      { label: "Height", value: "1151 mm" },
+      { label: "Wheelbase", value: "1260 mm" },
+      { label: "Ground Clearance", value: "160 mm" },
+      { label: "Kerb Weight", value: "106 Kg" },
+      { label: "Seat Length", value: "650 mm" },
+      { label: "Seat Height", value: "765 mm" },
+      { label: "Displacement", value: "109.51 cc" },
+      { label: "Max Net Power", value: "5.85 kW @ 8000 rpm" },
+      { label: "Max Net Torque", value: "9.03 N-m @ 5500 rpm" },
+      { label: "Bore", value: "47.0 mm" },
+      { label: "Stroke", value: "63.121 mm" },
+      { label: "Fuel System", value: "PGM-Fi" },
+      { label: "Compression Ratio", value: "10.1:1" },
+      { label: "Air Filter Type", value: "Viscous Paper Filter" },
+      { label: "Starting Method", value: "Self/kick" },
+      { label: "Clutch Type", value: "Automatic Centrifugal Clutch Dry Type" },
+      { label: "Frame Type", value: "Under Bone" },
+      { label: "Front", value: "Telescopic" },
+      { label: "Rear", value: "Unit Swing" },
+      { label: "Headlamp", value: "Halogen" },
+      { label: "Meter Console", value: "Analog" },
+      { label: "Charging Socket", value: "Optional" },
+      { label: "Max Engine Output", value: "5.85 kW @ 8000 rpm" },
+      { label: "Bore x Stroke", value: "47.000 X 63.121 mm" },
+    ],
+  },
+  {
+    slug: "dio-125",
+    name: "Honda Dio 125",
+    category: "scooter",
+    image: {
+      src: "/models/dio-125.jpg",
+      alt: "Honda Dio 125, side profile",
+      width: 1200,
+      height: 630,
+      source: "honda",
+    },
+    publishedSpecs: [
+      { label: "Length", value: "1830 mm" },
+      { label: "Width", value: "707 mm" },
+      { label: "Height", value: "1172 mm" },
+      { label: "Wheelbase", value: "1260 mm" },
+      { label: "Ground Clearance", value: "171 mm" },
+      { label: "Seat Length", value: "708 mm" },
+      { label: "Kerb Weight", value: "105 kg" },
+      { label: "Fuel Tank Capacity", value: "5.3 L" },
+      { label: "Type", value: "4 Stroke, SI Engine" },
+      { label: "Displacement", value: "123.92 cc" },
+      { label: "Max Net Power", value: "6.11 kW @6500 rpm" },
+      { label: "Max Net Torque", value: "10.5 Nm @5000 rpm" },
+      { label: "Bore", value: "50.0 mm" },
+      { label: "Stroke", value: "63.113 mm" },
+      { label: "Fuel System", value: "PGM-FI" },
+      { label: "Compression Ratio", value: "10.0:1" },
+      { label: "Air Filter Type", value: "Viscous Paper Filter" },
+      { label: "Starting Method", value: "Self/Kick" },
+      { label: "Clutch Type", value: "Automatic Centrifugal Clutch Dry Type" },
+      { label: "Frame Type", value: "Underbone" },
+      { label: "Front Suspension", value: "Telescopic" },
+      { label: "Rear Suspension", value: "3-Step Adjustable Spring Loaded Hydraulic" },
+      { label: "Battery", value: "12 V, 5.0 Ah" },
+      { label: "Headlamp", value: "LED" },
+      { label: "Key Type", value: "Standard Key" },
+      { label: "Max Engine Output", value: "6.11 kW @6500 rpm" },
+    ],
+  },
+  {
+    slug: "shine-100",
+    name: "Honda Shine 100",
+    category: "motorcycle",
+    image: {
+      src: "/models/shine-100.jpg",
+      alt: "Honda Shine 100, side profile",
+      width: 1200,
+      height: 630,
+      source: "honda",
+    },
+    publishedSpecs: [
+      { label: "Length", value: "1955 mm" },
+      { label: "Width", value: "754 mm" },
+      { label: "Height", value: "1050 mm" },
+      { label: "Wheelbase", value: "1245 mm" },
+      { label: "Ground Clearance", value: "168 mm" },
+      { label: "Kerb Weight", value: "99 kg" },
+      { label: "Seat Length", value: "676 mm" },
+      { label: "Seat Height", value: "786 mm" },
+      { label: "Fuel Tank Capacity", value: "9 L" },
+      { label: "Type", value: "4-Stroke SI Engine" },
+      { label: "Displacement", value: "98.98 cc" },
+      { label: "Max Engine Output", value: "5.43 kW @ 7500 rpm" },
+      { label: "Max Net Torque", value: "8.05 Nm @ 5000 rpm" },
+      { label: "Fuel System", value: "PGM-FI" },
+      { label: "Bore x Stroke", value: "47.0 X 57.049 mm" },
+      { label: "Compression Ratio", value: "10.0:1" },
+      { label: "Starting Method", value: "Self/Kick" },
+      { label: "Clutch Type", value: "Multiplate Wet Clutch" },
+      { label: "No. of Gears", value: "4" },
+      { label: "Frame Type", value: "Diamond Type" },
+      { label: "Front Suspension", value: "Telescopic" },
+      { label: "Rear Suspension", value: "Twin" },
+      { label: "Battery", value: "12 V, 3.0 Ah" },
+      { label: "Headlamp", value: "Bulb Type" },
+    ],
+  },
+  {
+    slug: "shine-100-dx",
+    name: "Honda Shine 100 Dx",
+    category: "motorcycle",
+    image: {
+      src: "/models/shine-100-dx.jpg",
+      alt: "Honda Shine 100 Dx, side profile",
+      width: 1200,
+      height: 630,
+      source: "honda",
+    },
+    publishedSpecs: [
+      { label: "Length", value: "1955 mm" },
+      { label: "Width", value: "754 mm" },
+      { label: "Height", value: "1050 mm" },
+      { label: "Wheelbase", value: "1245 mm" },
+      { label: "Ground Clearance", value: "168 mm" },
+      { label: "Kerb Weight", value: "103 kg" },
+      { label: "Seat Length", value: "677 mm" },
+      { label: "Seat Height", value: "786 mm" },
+      { label: "Fuel Tank Capacity", value: "10.0 L" },
+      { label: "Type", value: "4 Stroke, SI Engine" },
+      { label: "Displacement", value: "98.98 cc" },
+      { label: "Max Engine Output", value: "5.43 kW @ 7500 rpm" },
+      { label: "Max Net Torque", value: "8.05 Nm @ 5000 rpm" },
+      { label: "Fuel System", value: "PGM-FI" },
+      { label: "Bore x Stroke", value: "47.0 X 57.049 mm" },
+      { label: "Compression Ratio", value: "10.0:1" },
+      { label: "Starting Method", value: "Self/Kick start" },
+      { label: "Clutch Type", value: "Multiplate Wet Clutch" },
+      { label: "No. of Gears", value: "4 Gear" },
+      { label: "Frame Type", value: "Diamond Type" },
+      { label: "Front Suspension", value: "Telescopic" },
+      { label: "Rear Suspension", value: "Twin (5-Setps Adjustable)" },
+      { label: "Battery", value: "12 V, 3.0 Ah" },
+      { label: "Headlamp", value: "Halogen Bulb, DC" },
     ],
   },
   {
@@ -63,11 +267,32 @@ export const MODELS: Model[] = [
       height: 630,
       source: "honda",
     },
-    specs: { displacementCc: 123.94 },
     publishedSpecs: [
       { label: "Displacement", value: "123.94 cc" },
       { label: "Fuel System", value: "PGM-FI" },
       { label: "Headlamp", value: "Halogen Bulb, DC" },
+      { label: "Length", value: "2046 mm" },
+      { label: "Width", value: "741 mm" },
+      { label: "Height", value: "1116 mm" },
+      { label: "Wheelbase", value: "1285 mm" },
+      { label: "Ground Clearance", value: "162 mm" },
+      { label: "Kerb Weight", value: "113 Kg" },
+      { label: "Seat Length", value: "651 mm" },
+      { label: "Seat Height", value: "791 mm" },
+      { label: "Fuel Tank Capacity", value: "10.5 L" },
+      { label: "Type", value: "4 Stroke, SI, BS-VI Engine" },
+      { label: "Max Engine Output", value: "7.93 kW @ 7500 rpm" },
+      { label: "Max Net Torque", value: "11 Nm @ 6000 rpm" },
+      { label: "Bore x Stroke", value: "50.00 X 63.121" },
+      { label: "Compression Ratio", value: "10.0:1" },
+      { label: "Starting Method", value: "Self/Kick" },
+      { label: "Clutch Type", value: "Multiplate Wet Clutch" },
+      { label: "No. of Gears", value: "5" },
+      { label: "Frame Type", value: "Diamond Type" },
+      { label: "Front Suspension", value: "Telescopic" },
+      { label: "Rear Suspension", value: "Hydraulic" },
+      { label: "Battery", value: "12 V, 5 Ah" },
+      { label: "Charging Socket", value: "Optional" },
     ],
   },
   {
@@ -81,11 +306,33 @@ export const MODELS: Model[] = [
       height: 630,
       source: "honda",
     },
-    specs: { displacementCc: 109.51 },
     publishedSpecs: [
       { label: "Displacement", value: "109.51 cc" },
       { label: "Battery", value: "12 V, 4 Ah" },
       { label: "Headlamp", value: "Halogen Bulb, DC" },
+      { label: "Length", value: "2020 mm" },
+      { label: "Width", value: "751 mm" },
+      { label: "Height", value: "1116 mm" },
+      { label: "Wheelbase", value: "1278 mm" },
+      { label: "Ground Clearance", value: "163 mm" },
+      { label: "Kerb Weight", value: "112 Kg" },
+      { label: "Seat Length", value: "657 mm" },
+      { label: "Seat Height", value: "790 mm" },
+      { label: "Fuel Tank Capacity", value: "9 L" },
+      { label: "Type", value: "Air cooled, 4 Stroke, SI Engine" },
+      { label: "Max Engine Output", value: "6.47 kW @7500 rpm" },
+      { label: "Max Net Torque", value: "9.30 Nm @ 5500 rpm" },
+      { label: "Fuel System", value: "PGM-FI" },
+      { label: "Bore x Stroke", value: "47 X 63.121 mm" },
+      { label: "Compression Ratio", value: "10.1:1" },
+      { label: "Starting Method", value: "Self/Kick" },
+      { label: "Clutch Type", value: "Multiplate Wet Clutch" },
+      { label: "No. of Gears", value: "4" },
+      { label: "Frame Type", value: "Diamond Type" },
+      { label: "Front Suspension", value: "Telescopic" },
+      { label: "Rear Suspension", value: "Hydraulic" },
+      { label: "Brake Type (Front)", value: "Disc" },
+      { label: "Brake Size (Front)", value: "240 mm" },
     ],
   },
   {
@@ -99,11 +346,74 @@ export const MODELS: Model[] = [
       height: 630,
       source: "honda",
     },
-    specs: { displacementCc: 123.94 },
     publishedSpecs: [
       { label: "Displacement", value: "123.94 cc" },
       { label: "Headlamp", value: "LED, DC" },
       { label: "Fuel Tank Capacity", value: "11 L" },
+      { label: "Length", value: "2027 mm" },
+      { label: "Width", value: "785 mm" },
+      { label: "Height", value: "1091 mm" },
+      { label: "Wheelbase", value: "1285 mm" },
+      { label: "Ground Clearance", value: "160 mm" },
+      { label: "Kerb Weight", value: "116 Kg" },
+      { label: "Seat Length", value: "678 mm" },
+      { label: "Seat Height", value: "790 mm" },
+      { label: "Type", value: "4-stroke, SI Engine" },
+      { label: "Max Net Power", value: "8kW @ 7500 rpm" },
+      { label: "Max Net Torque", value: "10.9 Nm @ 6000 rpm" },
+      { label: "Fuel System", value: "PGM-FI" },
+      { label: "Bore x Stroke", value: "50.0 X 63.1 mm" },
+      { label: "Compression Ratio", value: "10.0:1" },
+      { label: "Starting Method", value: "Self/Kick" },
+      { label: "Clutch Type", value: "Multiplate Wet Clutch" },
+      { label: "No. of Gears", value: "5" },
+      { label: "Frame Type", value: "Diamond Type" },
+      { label: "Front Suspension", value: "Telescopic" },
+      { label: "Rear Suspension", value: "Hydraulic Type" },
+      { label: "Battery", value: "12 V, 5.0 Ah" },
+      { label: "Meter Console", value: "Fully Digital Meter" },
+      { label: "Brakes", value: "Drum" },
+      { label: "Weight", value: "116 kg" },
+    ],
+  },
+  {
+    slug: "sp-160",
+    name: "Honda SP 160",
+    category: "motorcycle",
+    image: {
+      src: "/models/sp-160.jpg",
+      alt: "Honda SP 160, side profile",
+      width: 1200,
+      height: 630,
+      source: "honda",
+    },
+    publishedSpecs: [
+      { label: "Length", value: "2061 mm" },
+      { label: "Width", value: "786 mm" },
+      { label: "Height", value: "1100 mm" },
+      { label: "Wheelbase", value: "1347mm" },
+      { label: "Ground Clearance", value: "177 mm" },
+      { label: "Kerb Weight", value: "138 kg" },
+      { label: "Seat Length", value: "594 mm" },
+      { label: "Seat Height", value: "796 mm" },
+      { label: "Fuel Tank Capacity", value: "12 L" },
+      { label: "Type", value: "4-Stroke, SI, BS-VI Engine" },
+      { label: "Displacement", value: "162.71 cc" },
+      { label: "Max Engine Output", value: "9.7 Kw @7500 rpm" },
+      { label: "Max Net Torque", value: "14.8 N-m @ 5250 rpm" },
+      { label: "Fuel System", value: "PGM-FI" },
+      { label: "Bore x Stroke", value: "57.3 mm X 63.096 mm" },
+      { label: "Compression Ratio", value: "10.0:1" },
+      { label: "Starting Method", value: "Self" },
+      { label: "Clutch Type", value: "Multiplate Wet Clutch" },
+      { label: "No. of Gears", value: "5" },
+      { label: "Frame Type", value: "Diamond Type" },
+      { label: "Front Suspension", value: "Telescopic" },
+      { label: "Rear Suspension", value: "Monoshock" },
+      { label: "Battery", value: "12 V, 5 Ah" },
+      { label: "Headlamp", value: "LED" },
+      { label: "Rear Brake", value: "Drum" },
+      { label: "Weight", value: "138 kg" },
     ],
   },
   {
@@ -117,10 +427,31 @@ export const MODELS: Model[] = [
       height: 630,
       source: "honda",
     },
-    specs: { displacementCc: 162.71 },
     publishedSpecs: [
       { label: "Displacement", value: "162.71 cc" },
       { label: "Headlamp", value: "LED" },
+      { label: "Length", value: "2081 mm" },
+      { label: "Width", value: "756 mm" },
+      { label: "Height", value: "1103 mm" },
+      { label: "Wheelbase", value: "1335 mm" },
+      { label: "Ground Clearance", value: "187 mm" },
+      { label: "Kerb Weight", value: "139 kg" },
+      { label: "Seat Length", value: "715 mm" },
+      { label: "Seat Height", value: "798 mm" },
+      { label: "Fuel Tank Capacity", value: "13 L" },
+      { label: "Type", value: "4 Stroke, SI, BS-VI Engine" },
+      { label: "Max Engine Output", value: "9.7 kW @7500 rpm" },
+      { label: "Max Net Torque", value: "14.8 Nm @ 5250 rpm" },
+      { label: "Fuel System", value: "PGM-FI" },
+      { label: "Bore x Stroke", value: "57.3 mm X 63.096 mm" },
+      { label: "Compression Ratio", value: "10:01" },
+      { label: "Starting Method", value: "Self/Kick" },
+      { label: "Clutch Type", value: "Multiplate Wet Clutch" },
+      { label: "No. of Gears", value: "5" },
+      { label: "Frame Type", value: "Diamond Type" },
+      { label: "Front Suspension", value: "Telescopic" },
+      { label: "Rear Suspension", value: "Monoshock" },
+      { label: "Battery", value: "12 V, 5 Ah" },
     ],
   },
   {
@@ -139,11 +470,68 @@ export const MODELS: Model[] = [
       { label: "Fuel Tank Capacity", value: "12 L" },
       { label: "Headlamp", value: "LED" },
       { label: "Max Net Torque", value: "15.7 Nm @ 6000 rpm" },
+      { label: "Length", value: "2034 mm" },
+      { label: "Width", value: "783 mm" },
+      { label: "Height", value: "1064 mm" },
+      { label: "Wheelbase", value: "1356 mm" },
+      { label: "Ground Clearance", value: "168 mm" },
+      { label: "Seat Length", value: "590 mm" },
+      { label: "Kerb Weight", value: "142 Kg" },
+      { label: "Type", value: "4 Stroke, SI Engine" },
+      { label: "Displacement", value: "184.40 cc" },
+      { label: "Max Net Power", value: "12.5 kW @ 8500 rpm" },
+      { label: "Bore", value: "61.000 mm" },
+      { label: "Stroke", value: "63.096 mm" },
+      { label: "Fuel System", value: "PGM- FI" },
+      { label: "Compression Ratio", value: "9.5:1" },
+      { label: "Starting Method", value: "Self Start" },
+      { label: "Clutch Type", value: "Multiplate Wet Clutch" },
+      { label: "No. of Gears", value: "5" },
+      { label: "Frame Type", value: "Diamond Type" },
+      { label: "Front Suspension", value: "Upside down Fork(USD)" },
+      { label: "Rear Suspension", value: "Monoshock" },
+      { label: "Winkers", value: "LED" },
+    ],
+  },
+  {
+    slug: "cb125-hornet",
+    name: "Honda CB125 Hornet",
+    category: "motorcycle",
+    image: {
+      src: "/models/cb125-hornet.jpg",
+      alt: "Honda CB125 Hornet, side profile",
+      width: 1200,
+      height: 630,
+      source: "honda",
+    },
+    publishedSpecs: [
+      { label: "Length", value: "2015 mm" },
+      { label: "Width", value: "783 mm" },
+      { label: "Height", value: "1087 mm" },
+      { label: "Wheelbase", value: "1330 mm" },
+      { label: "Ground Clearance", value: "166 mm" },
+      { label: "Kerb Weight", value: "124 kg" },
+      { label: "Seat Length", value: "597 mm" },
+      { label: "Fuel Tank Capacity", value: "12 L" },
+      { label: "Type", value: "4 Stroke, SI Engine" },
+      { label: "Displacement", value: "123.94 cc" },
+      { label: "Max Engine Output", value: "8.2 kW @7500 rpm" },
+      { label: "Max Net Torque", value: "11.2 N-m @6000 rpm" },
+      { label: "Fuel System", value: "PGM-FI" },
+      { label: "Bore x Stroke", value: "50.000 x 63.121 mm" },
+      { label: "Compression Ratio", value: "10.0:1" },
+      { label: "Starting Method", value: "Self start" },
+      { label: "Clutch Type", value: "Multiplate Wet Clutch" },
+      { label: "No. of Gears", value: "5" },
+      { label: "Frame Type", value: "Diamond Type" },
+      { label: "Front Suspension", value: "Upside down Fork (USD)" },
+      { label: "Rear Suspension", value: "Monoshock" },
+      { label: "Battery", value: "12V, 4.0 Ah" },
+      { label: "Headlamp", value: "LED" },
+      { label: "Winkers", value: "LED" },
     ],
   },
 ];
-
-/* ---- queries ------------------------------------------------------ */
 
 export function getModels(): Model[] {
   return MODELS;
@@ -157,39 +545,22 @@ export function getModel(slug: string): Model | undefined {
   return MODELS.find((m) => m.slug === slug);
 }
 
-/**
- * Curated by the dealership via the `featured` flag. Falls back to the first
- * few models so the homepage still has product before curation happens.
- */
-export function getFeaturedModels(limit = 6): Model[] {
+/** Curated by the dealership via the `featured` flag; falls back to the range. */
+export function getFeaturedModels(limit = 12): Model[] {
   const curated = MODELS.filter((m) => m.featured);
   return (curated.length > 0 ? curated : MODELS).slice(0, limit);
 }
 
-/** The single model used in the homepage hero, if one is available. */
 export function getHeroModel(): Model | undefined {
   return getFeaturedModels(1)[0];
 }
 
-/**
- * Related models: same category, price-adjacent where prices exist, never
- * cross-category — a scooter buyer is not shopping motorcycles.
- */
+/** Same category only — a scooter buyer is not shopping motorcycles. */
 export function getRelatedModels(model: Model, limit = 3): Model[] {
-  const sameCategory = MODELS.filter(
-    (m) => m.category === model.category && m.slug !== model.slug,
+  return MODELS.filter((m) => m.category === model.category && m.slug !== model.slug).slice(
+    0,
+    limit,
   );
-
-  const price = model.startingPrice?.amount;
-  if (price === undefined) return sameCategory.slice(0, limit);
-
-  return [...sameCategory]
-    .sort((a, b) => {
-      const da = a.startingPrice ? Math.abs(a.startingPrice.amount - price) : Infinity;
-      const db = b.startingPrice ? Math.abs(b.startingPrice.amount - price) : Infinity;
-      return da - db;
-    })
-    .slice(0, limit);
 }
 
 export const hasModels = MODELS.length > 0;

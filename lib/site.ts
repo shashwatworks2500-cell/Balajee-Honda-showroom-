@@ -61,6 +61,18 @@ export const MAP_HREF = `https://www.google.com/maps/search/?api=1&query=${encod
   `${BUSINESS_NAME}, ${ADDRESS_ONE_LINE}`,
 )}`;
 
+/**
+ * Embeddable map for the same address.
+ *
+ * Uses Google's keyless embed, which resolves the address itself — so this
+ * stays correct without anyone minting an API key, and still contains no
+ * invented coordinates. Swap in a place-ID embed later if you want the pin to
+ * land on the exact shopfront.
+ */
+export const MAP_EMBED = `https://www.google.com/maps?q=${encodeURIComponent(
+  `${BUSINESS_NAME}, ${ADDRESS_ONE_LINE}`,
+)}&output=embed`;
+
 /* ---- hours -------------------------------------------------------- */
 
 export const HOURS = {

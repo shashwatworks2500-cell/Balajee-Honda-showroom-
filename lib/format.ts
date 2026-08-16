@@ -72,11 +72,41 @@ export function specRows(specs: Specifications | undefined): SpecRow[] {
 }
 
 /**
+ * What a buyer actually compares, most decisive first.
+ *
+ * Honda publishes its full specification table in its own order, which opens
+ * with physical dimensions — true, but nobody chooses a commuter on its width.
+ * This ranks the labels for the card; anything unlisted keeps Honda's order
+ * behind them. Labels are matched, never rewritten.
+ */
+const CARD_SPEC_PRIORITY = [
+  "displacement",
+  "max net power",
+  "max engine output",
+  "max net torque",
+  "mileage",
+  "live mileage",
+  "kerb weight",
+  "fuel tank capacity",
+  "starting method",
+  "no. of gears",
+];
+
+/**
  * The two or three specs shown on a card and in the hero strip.
  * Published values win, so a card never shows a number we derived.
  */
 export function modelKeySpecs(model: Model, limit = 3): SpecRow[] {
-  return modelSpecRows(model).slice(0, limit);
+  const rank = (row: SpecRow) => {
+    const i = CARD_SPEC_PRIORITY.indexOf(row.label.toLowerCase());
+    return i === -1 ? CARD_SPEC_PRIORITY.length : i;
+  };
+  // Stable: equal ranks keep the manufacturer's published order.
+  return modelSpecRows(model)
+    .map((row, i) => ({ row, i }))
+    .sort((a, b) => rank(a.row) - rank(b.row) || a.i - b.i)
+    .slice(0, limit)
+    .map((e) => e.row);
 }
 
 /** "9:30 am" from "09:30". Used only for verified opening hours. */

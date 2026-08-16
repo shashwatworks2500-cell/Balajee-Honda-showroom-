@@ -9,7 +9,7 @@ import {
   Wrench,
 } from "lucide-react";
 
-import { Parallax, Reveal, RevealGroup, RevealItem } from "@/components/motion/motion-kit";
+import { Reveal, RevealGroup, RevealItem } from "@/components/motion/motion-kit";
 import { Spotlight } from "@/components/motion/spotlight";
 import { Button, Container, Eyebrow, Section, SectionHead } from "@/components/ui/kit";
 import {
@@ -19,6 +19,7 @@ import {
   CONTACT,
   HOURS,
   LANDMARKS,
+  MAP_EMBED,
   MAP_HREF,
   NOT_OFFERED,
   PAYMENT_METHODS,
@@ -199,12 +200,16 @@ export function Visit() {
               </div>
               <div className="flex items-baseline gap-6 py-4">
                 <dt className="t-slug w-24 shrink-0">Email</dt>
-                <dd className="t-data break-all text-[0.9375rem]">
+                <dd className="t-data text-[0.9375rem]">
                   <a
                     href={`mailto:${CONTACT.email}`}
                     className="link-sweep inline-flex min-h-11 items-center text-bright transition-colors hover:text-signal"
                   >
-                    {CONTACT.email}
+                    {/* Break at the @, not mid-word: "…hdi / @gmail.com" reads
+                        as an address, "…gmai / l.com" reads as a typo. */}
+                    {CONTACT.email.split("@")[0]}
+                    <wbr />
+                    {`@${CONTACT.email.split("@")[1]}`}
                   </a>
                 </dd>
               </div>
@@ -235,43 +240,38 @@ export function Visit() {
             </div>
           </div>
 
-          {/* Landmark card — how people in Hardoi actually navigate. */}
+          {/* The map itself. Landmarks sit under it, because in Hardoi that is
+              how people actually navigate the last hundred metres. */}
           <Reveal>
-            <div className="relative h-full min-h-[22rem] overflow-hidden border border-hair bg-void">
-              <Parallax distance={26} className="absolute inset-0">
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-0 opacity-[0.35]"
-                  style={{
-                    backgroundImage:
-                      "linear-gradient(var(--color-hair) 1px, transparent 1px), linear-gradient(90deg, var(--color-hair) 1px, transparent 1px)",
-                    backgroundSize: "56px 56px",
-                  }}
+            <figure className="m-0 h-full">
+              <div className="relative overflow-hidden border border-hair bg-ink-2">
+                {/* Privacy extensions block Google embeds routinely. When that
+                    happens the iframe paints its own error page over this, so
+                    the fallback exists to make that page dark rather than a
+                    grey void — the address and directions are already to the
+                    left, so nothing load-bearing is lost. */}
+                <iframe
+                  src={MAP_EMBED}
+                  title={`Map showing ${BUSINESS_NAME}, ${ADDRESS.street}, ${ADDRESS.city}`}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  style={{ colorScheme: "dark" }}
+                  className="block h-[22rem] w-full border-0 lg:h-[30rem]"
                 />
-              </Parallax>
-
-              <div
-                aria-hidden="true"
-                className="absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_45%,rgba(224,25,51,0.12),transparent_70%)]"
-              />
-
-              <div className="relative flex h-full flex-col justify-between p-8">
-                <Eyebrow index="—">Landmarks</Eyebrow>
-                <ul className="space-y-5">
-                  {LANDMARKS.map((landmark) => (
-                    <li key={landmark} className="flex items-start gap-4">
-                      <MapPin aria-hidden="true" className="mt-1 size-4 shrink-0 text-signal" />
-                      <span className="t-data text-[1.0625rem] leading-snug text-bright">
-                        {landmark}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-                <p className="t-data text-[0.8125rem] text-faint">
-                  {ADDRESS.city} · {ADDRESS.state} {ADDRESS.postalCode}
-                </p>
               </div>
-            </div>
+
+              <figcaption className="mt-px grid gap-px bg-hair sm:grid-cols-2">
+                {LANDMARKS.map((landmark) => (
+                  <span
+                    key={landmark}
+                    className="flex items-start gap-3 bg-void px-5 py-4 text-[0.875rem] text-mute"
+                  >
+                    <MapPin aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-signal" />
+                    {landmark}
+                  </span>
+                ))}
+              </figcaption>
+            </figure>
           </Reveal>
         </div>
       </Container>

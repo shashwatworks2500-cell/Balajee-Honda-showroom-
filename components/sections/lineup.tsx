@@ -5,7 +5,6 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowUpRight, Phone } from "lucide-react";
 
-import { RevealItem, RevealGroup } from "@/components/motion/motion-kit";
 import { Spotlight } from "@/components/motion/spotlight";
 import { Button, Container, Section, SectionHead } from "@/components/ui/kit";
 import { modelKeySpecs } from "@/lib/format";
@@ -23,8 +22,23 @@ type Filter = "all" | Category;
 
 export function Lineup() {
   const [filter, setFilter] = useState<Filter>("all");
+  /** Has the visitor driven the filter yet? It changes what entrance is right. */
+  const [filtered, setFiltered] = useState(false);
 
   const shown = filter === "all" ? MODELS : MODELS.filter((m) => m.category === filter);
+
+  /**
+   * First view earns a scroll-staggered reveal. After that the visitor has
+   * asked to see a specific set, so the whole set appears at once — waiting
+   * for them to scroll before painting cards they just requested would read
+   * as a broken filter.
+   */
+  const entrance = filtered
+    ? { animate: { opacity: 1, y: 0 } }
+    : {
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true, amount: 0.15 } as const,
+      };
 
   const chips: { id: Filter; label: string }[] = [
     { id: "all", label: "All" },
@@ -61,7 +75,10 @@ export function Lineup() {
                   key={chip.id}
                   role="tab"
                   aria-selected={active}
-                  onClick={() => setFilter(chip.id)}
+                  onClick={() => {
+                    setFilter(chip.id);
+                    setFiltered(true);
+                  }}
                   className={cn(
                     "relative min-h-11 rounded-full px-5 text-[0.875rem] font-semibold transition-colors duration-300",
                     active ? "text-white" : "text-mute hover:text-bright",
@@ -81,27 +98,34 @@ export function Lineup() {
           </div>
         </div>
 
-        <RevealGroup className="mt-14 grid gap-px overflow-hidden border border-hair bg-hair sm:grid-cols-2 lg:grid-cols-3">
+        {/* Each card owns its own entrance rather than inheriting a variant
+            from a parent: cards mount and unmount as the filter changes, and a
+            card that mounts after the group's reveal has already run would
+            never receive the "shown" variant and would stay invisible. */}
+        <div className="mt-14 grid gap-px overflow-hidden border border-hair bg-hair sm:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout" initial={false}>
-            {shown.map((model) => (
+            {shown.map((model, i) => (
               <motion.div
                 key={model.slug}
                 layout
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, y: 24 }}
+                {...entrance}
                 exit={{ opacity: 0, scale: 0.98 }}
-                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                transition={{
+                  duration: 0.55,
+                  ease: [0.16, 1, 0.3, 1],
+                  // Row-wise stagger, capped so a long grid never crawls.
+                  delay: Math.min(i * 0.05, 0.3),
+                }}
                 className="group relative flex flex-col bg-ink transition-colors duration-300 hover:bg-ink-2"
               >
                 <Spotlight className="h-full" tint="rgba(207,230,255,0.07)">
-                  <RevealItem className="h-full">
-                    <ModelCard model={model} />
-                  </RevealItem>
+                  <ModelCard model={model} />
                 </Spotlight>
               </motion.div>
             ))}
           </AnimatePresence>
-        </RevealGroup>
+        </div>
 
         <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <p className="t-data max-w-xl text-[0.8125rem] leading-relaxed text-faint">
