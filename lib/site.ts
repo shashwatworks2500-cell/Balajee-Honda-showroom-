@@ -1,102 +1,19 @@
-import type {
-  CategoryDefinition,
-  ContactChannels,
-  DealershipProfile,
-  ImageAsset,
-  OpeningHours,
-  PostalAddress,
-  ServiceOffering,
-} from "./types";
+import type { CategoryDefinition, ImageAsset } from "./types";
 
 /**
- * Verified business data for Balajee Honda.
+ * Every piece of business information on this site lives here.
  *
- * Verified so far: the business name, the address, the landmarks and the
- * showroom phone number. Every other field is null or empty and MUST stay that
- * way until the dealership supplies the real value. Filling any of these with a plausible guess would put wrong
- * information in front of customers — a wrong phone number sends them to a
- * stranger, wrong hours send them to a closed showroom.
- *
- * When a value arrives, set it here. Every consuming section is already
- * conditional and will appear on its own.
+ * Components never hardcode a phone number, an address, an opening time or a
+ * service. Change a value in this file and it changes everywhere it appears.
  */
 
-/* ---- verified ---------------------------------------------------- */
+/* ---- identity ----------------------------------------------------- */
 
 export const BUSINESS_NAME = "Balajee Honda";
+export const BUSINESS_DESCRIPTOR = "Authorised Honda Motorcycle & Scooter Dealer";
+export const BUSINESS_SHORT = "Honda two-wheelers · Hardoi";
 
-/** What the business sells. Not a claim about dealer authorisation status. */
-export const BUSINESS_DESCRIPTOR = "Honda two-wheelers";
-
-export const ADDRESS: PostalAddress = {
-  street: "Station Road",
-  locality: "Avas Vikas Colony",
-  city: "Hardoi",
-  state: "Uttar Pradesh",
-  postalCode: "241001",
-  countryCode: "IN",
-};
-
-/**
- * Landmarks carry equal weight to the postal address. In a district town they
- * are how people actually navigate — often more useful than the pincode.
- */
-export const LANDMARKS: string[] = [
-  "Opposite Police Lines",
-  "Near State Bank of India (Main Branch), Railway Ganj",
-];
-
-export const ADDRESS_LINES: string[] = [
-  ADDRESS.street,
-  ADDRESS.locality,
-  `${ADDRESS.city}, ${ADDRESS.state} ${ADDRESS.postalCode}`,
-];
-
-/* ---- awaiting verification --------------------------------------- */
-
-export const CONTACT: ContactChannels = {
-  /** Verified: supplied by the dealership. */
-  phone: "8810789101",
-  phoneE164: "+918810789101",
-  whatsapp: null, // [REQUIRES VERIFIED CONTENT]
-  email: null, // [REQUIRES VERIFIED CONTENT]
-  mapUrl: null, // [REQUIRES VERIFIED CONTENT] — supplied URL only
-  geo: null, // [REQUIRES VERIFIED CONTENT]
-};
-
-/** Empty until the dealership confirms opening hours. */
-export const OPENING_HOURS: OpeningHours[] = []; // [REQUIRES VERIFIED CONTENT]
-
-/** Empty until the dealership describes its premises in its own words. */
-export const PROFILE: DealershipProfile = {
-  establishedYear: null, // [REQUIRES VERIFIED CONTENT]
-  highlights: [], // [REQUIRES VERIFIED CONTENT]
-};
-
-/** Empty until the dealership confirms which services it offers. */
-export const SERVICES: ServiceOffering[] = []; // [REQUIRES VERIFIED CONTENT]
-
-/** Honda's warranty wording, reproduced verbatim. Never summarised by us. */
-export const WARRANTY_TEXT: string | null = null; // [REQUIRES VERIFIED CONTENT]
-
-/** The dealership's own privacy policy text. Required before forms go live. */
-export const PRIVACY_POLICY_TEXT: string | null = null; // [REQUIRES VERIFIED CONTENT]
-
-/** Genuine parts statement, in the dealership's words. */
-export const GENUINE_PARTS_TEXT: string | null = null; // [REQUIRES VERIFIED CONTENT]
-
-/** What a test ride involves here — booking needed, what to bring. */
-export const TEST_RIDE_NOTE: string | null = null; // [REQUIRES VERIFIED CONTENT]
-
-/**
- * The supplied Balajee Honda logo.
- *
- * The artwork was provided by the dealership and must be used as-is — never
- * redrawn, recoloured, distorted or given effects. Drop the supplied file into
- * `public/brand/` and fill this in; until then the header and footer fall back
- * to a typographic lockup rather than showing a broken or approximated mark.
- */
-export const BRAND_LOGO: ImageAsset | null = {
+export const BRAND_LOGO: ImageAsset = {
   src: "/brand/balajee-honda-logo-trimmed.png",
   alt: "Balajee Honda",
   width: 872,
@@ -104,14 +21,123 @@ export const BRAND_LOGO: ImageAsset | null = {
   source: "dealership",
 };
 
-/**
- * Shown wherever the catalogue appears. The lineup below comes from Honda's
- * current published range — which models this showroom holds in stock on any
- * given day is not something we can assert, so we say so plainly rather than
- * implying availability.
- */
-export const AVAILABILITY_NOTE =
-  "Models shown are from Honda's current range. Call the showroom to confirm what is available.";
+/* ---- location ----------------------------------------------------- */
+
+export const ADDRESS = {
+  plot: "106-106/3, Line Purwa",
+  street: "Station Road",
+  locality: "Avas Vikas Colony",
+  city: "Hardoi",
+  state: "Uttar Pradesh",
+  postalCode: "241001",
+  countryCode: "IN",
+} as const;
+
+export const ADDRESS_LINES: string[] = [
+  `${ADDRESS.plot}`,
+  `${ADDRESS.street}, ${ADDRESS.locality}`,
+  `${ADDRESS.city}, ${ADDRESS.state} ${ADDRESS.postalCode}`,
+];
+
+export const ADDRESS_ONE_LINE = `${ADDRESS.plot}, ${ADDRESS.street}, ${ADDRESS.locality}, ${ADDRESS.city}, ${ADDRESS.state} ${ADDRESS.postalCode}`;
+
+/** How people actually navigate here — often better than the pincode. */
+export const LANDMARKS: string[] = [
+  "Opposite Police Lines",
+  "Near State Bank of India (Main Branch), Railway Ganj",
+];
+
+/* ---- contact ------------------------------------------------------ */
+
+export const CONTACT = {
+  phoneDisplay: "+91 95541 13333",
+  phoneHref: "tel:+919554113333",
+  phoneE164: "+919554113333",
+  email: "balaji.autopointhdi@gmail.com",
+} as const;
+
+/** Maps search on the verified address. No coordinates are invented. */
+export const MAP_HREF = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+  `${BUSINESS_NAME}, ${ADDRESS_ONE_LINE}`,
+)}`;
+
+/* ---- hours -------------------------------------------------------- */
+
+export const HOURS = {
+  summary: "Open every day",
+  time: "9:00 AM – 9:00 PM",
+  /** Machine form for structured data. */
+  opens: "09:00",
+  closes: "21:00",
+} as const;
+
+/* ---- reputation --------------------------------------------------- */
+
+/** Attributed, not claimed as our own metric. */
+export const RATING = {
+  value: "4.3–4.4",
+  scale: "5",
+  source: "Justdial",
+} as const;
+
+/* ---- what the dealership does ------------------------------------- */
+
+export interface Service {
+  id: string;
+  title: string;
+  body: string;
+  points: string[];
+}
+
+export const SERVICES: Service[] = [
+  {
+    id: "sales",
+    title: "New Honda sales",
+    body: "The current Honda motorcycle and scooter range, on the floor at Station Road.",
+    points: ["Scooters and motorcycles", "Test rides before you buy", "Booking at the counter"],
+  },
+  {
+    id: "finance",
+    title: "Finance",
+    body: "In-house loan processing with multiple partner banks, handled at the showroom.",
+    points: ["Instant approval options", "Low down-payment options", "Paperwork done here"],
+  },
+  {
+    id: "exchange",
+    title: "Exchange",
+    body: "Bring your old two-wheeler in. Its valuation goes straight against your new Honda.",
+    points: ["Valuation at the showroom", "Applied to the new purchase"],
+  },
+  {
+    id: "insurance",
+    title: "Insurance",
+    body: "New vehicle enrolment and annual renewal, without a second trip anywhere.",
+    points: ["New vehicle enrolment", "Annual renewal"],
+  },
+  {
+    id: "service",
+    title: "Service & repairs",
+    body: "Expert repair and service for Honda two-wheelers, by the people who sell them.",
+    points: ["Periodic service", "Repairs", "Honda-trained staff"],
+  },
+  {
+    id: "parts",
+    title: "Genuine parts & accessories",
+    body: "Official Honda parts and accessories over the counter.",
+    points: ["Honda genuine spares", "Helmets", "Crash guards", "Seat covers"],
+  },
+];
+
+/** Stated plainly so nobody makes a wasted trip. */
+export const NOT_OFFERED = ["Driving classes", "Vehicle customisation"];
+
+export const PAYMENT_METHODS = [
+  "Cash",
+  "UPI / QR",
+  "Debit card",
+  "Credit card",
+  "Online bank transfer",
+];
 
 /* ---- categories --------------------------------------------------- */
 
@@ -128,91 +154,10 @@ export const CATEGORIES: CategoryDefinition[] = [
     slug: "motorcycles",
     label: "Motorcycles",
     labelSingular: "Motorcycle",
-    blurb: "Geared two-wheelers, from commuter models to larger engines.",
+    blurb: "Geared two-wheelers, from commuter models upward.",
   },
 ];
 
-export function getCategory(slug: string): CategoryDefinition | undefined {
-  return CATEGORIES.find((c) => c.slug === slug);
-}
-
-/* ---- derived availability flags ----------------------------------- */
-/* Sections read these instead of testing raw fields, so the intent is
-   readable at the call site and a single field change lights up the UI. */
-
-export const has = {
-  phone: CONTACT.phone !== null,
-  whatsapp: CONTACT.whatsapp !== null,
-  email: CONTACT.email !== null,
-  map: CONTACT.mapUrl !== null,
-  geo: CONTACT.geo !== null,
-  hours: OPENING_HOURS.length > 0,
-  profileHighlights: PROFILE.highlights.length > 0,
-  premisesImage: Boolean(PROFILE.exteriorImage ?? PROFILE.interiorImage),
-  workshopImage: Boolean(PROFILE.workshopImage),
-  services: SERVICES.length > 0,
-  warranty: WARRANTY_TEXT !== null,
-  genuineParts: GENUINE_PARTS_TEXT !== null,
-  privacyPolicy: PRIVACY_POLICY_TEXT !== null,
-  testRideNote: TEST_RIDE_NOTE !== null,
-  brandLogo: BRAND_LOGO !== null,
-} as const;
-
-/** True when any contact channel can actually be actioned by a visitor. */
-export const hasAnyContactChannel = has.phone || has.whatsapp || has.email;
-
-/**
- * Whether submitted enquiries have somewhere to go.
- *
- * Server-only — reads the environment at request time. Forms are not shown to
- * visitors until this is true, because an enquiry submitted into nothing is a
- * lost customer who believes they have been contacted.
- */
-export function enquiryDeliveryConfigured(): boolean {
-  return Boolean(process.env.ENQUIRY_WEBHOOK_URL);
-}
-
-/* ---- formatting helpers ------------------------------------------- */
-
-export const DAY_NAMES = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-] as const;
-
-/** Dial link. Returns null when unverified. */
-export function phoneHref(): string | null {
-  return CONTACT.phone ? `tel:${CONTACT.phone}` : null;
-}
-
-/** Readable grouping for an Indian mobile number: 88107 89101. */
-export function phoneDisplay(): string | null {
-  if (!CONTACT.phone) return null;
-  const digits = CONTACT.phone.replace(/\D/g, "");
-  return digits.length === 10 ? `${digits.slice(0, 5)} ${digits.slice(5)}` : CONTACT.phone;
-}
-
-/**
- * Directions destination.
- *
- * Uses the dealership's supplied map URL when one exists. Until then it falls
- * back to a Maps search for the verified postal address — no latitude or
- * longitude is invented, and swapping in a real URL is a one-line change to
- * CONTACT.mapUrl.
- */
-export function mapDestinationHref(): string {
-  if (CONTACT.mapUrl) return CONTACT.mapUrl;
-  const query = encodeURIComponent(`${BUSINESS_NAME}, ${ADDRESS_ONE_LINE}`);
-  return `https://www.google.com/maps/search/?api=1&query=${query}`;
-}
-
-export function whatsappHref(): string | null {
-  return CONTACT.whatsapp ? `https://wa.me/${CONTACT.whatsapp}` : null;
-}
-
-/** Single-line address, used in metadata and structured data. */
-export const ADDRESS_ONE_LINE = `${ADDRESS.street}, ${ADDRESS.locality}, ${ADDRESS.city}, ${ADDRESS.state} ${ADDRESS.postalCode}`;
+/** Shown with the lineup: the range is Honda's, the stock is a phone call away. */
+export const AVAILABILITY_NOTE =
+  "Models shown are from Honda's current range. Call the showroom to confirm what is on the floor today.";

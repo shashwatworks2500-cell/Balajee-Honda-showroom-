@@ -2,15 +2,20 @@ import type { Metadata, Viewport } from "next";
 import { Archivo, IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 
-import { Footer } from "@/components/layout/footer";
-import { SiteHeader } from "@/components/layout/site-header";
-import { SkipLink } from "@/components/layout/skip-link";
+import { Footer, Header, SkipLink } from "@/components/layout/chrome";
+import { MotionProvider } from "@/components/motion/motion-provider";
 import { SmoothScroll } from "@/components/motion/smooth-scroll";
-import { BUSINESS_DESCRIPTOR, BUSINESS_NAME } from "@/lib/site";
-import { CITY, dealerSchema } from "@/lib/seo";
+import {
+  ADDRESS,
+  ADDRESS_ONE_LINE,
+  BUSINESS_DESCRIPTOR,
+  BUSINESS_NAME,
+  CONTACT,
+  HOURS,
+  LANDMARKS,
+  MAP_HREF,
+} from "@/lib/site";
 
-/* Display: wide grotesque, used with restraint for names and section heads. */
-/* Variable across weight and width, so `axes` replaces a static weight list. */
 const archivo = Archivo({
   subsets: ["latin"],
   axes: ["wdth"],
@@ -18,7 +23,6 @@ const archivo = Archivo({
   display: "swap",
 });
 
-/* Body: drawn for technical documentation, which is the register here. */
 const plexSans = IBM_Plex_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
@@ -26,7 +30,6 @@ const plexSans = IBM_Plex_Sans({
   display: "swap",
 });
 
-/* Data: every price, spec and phone number. Tabular by default. */
 const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
@@ -35,43 +38,107 @@ const plexMono = IBM_Plex_Mono({
 });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const description = `${BUSINESS_DESCRIPTOR} on ${ADDRESS.street}, ${ADDRESS.city}. Honda motorcycles and scooters with finance, insurance, exchange, service and genuine parts. Open ${HOURS.time} every day.`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: `${BUSINESS_NAME} — Honda Two-Wheeler Showroom in ${CITY}`,
+    default: `${BUSINESS_NAME} — Honda Showroom in ${ADDRESS.city}`,
     template: `%s | ${BUSINESS_NAME}`,
   },
-  description: `${BUSINESS_NAME} is a ${BUSINESS_DESCRIPTOR} showroom on Station Road, ${CITY}. Visit us or book a test ride.`,
+  description,
   applicationName: BUSINESS_NAME,
+  keywords: [
+    `Honda showroom ${ADDRESS.city}`,
+    `Honda bikes ${ADDRESS.city}`,
+    `Honda scooters ${ADDRESS.city}`,
+    `Honda service ${ADDRESS.city}`,
+    BUSINESS_NAME,
+  ],
   formatDetection: { telephone: true, address: true },
+  openGraph: {
+    title: `${BUSINESS_NAME} — Honda Showroom in ${ADDRESS.city}`,
+    description,
+    url: "/",
+    siteName: BUSINESS_NAME,
+    locale: "en_IN",
+    type: "website",
+    images: [{ url: "/hero/hornet-headlight.jpg", width: 2000, height: 1250 }],
+  },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0e1416",
+  themeColor: "#08090a",
+};
+
+/** Structured data. Every field below is verified business information. */
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "MotorcycleDealer",
+  name: BUSINESS_NAME,
+  description: BUSINESS_DESCRIPTOR,
+  url: siteUrl,
+  telephone: CONTACT.phoneE164,
+  email: CONTACT.email,
+  image: `${siteUrl}/brand/balajee-honda-logo.png`,
+  logo: `${siteUrl}/brand/balajee-honda-logo.png`,
+  hasMap: MAP_HREF,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: `${ADDRESS.plot}, ${ADDRESS.street}, ${ADDRESS.locality}`,
+    addressLocality: ADDRESS.city,
+    addressRegion: ADDRESS.state,
+    postalCode: ADDRESS.postalCode,
+    addressCountry: ADDRESS.countryCode,
+  },
+  areaServed: { "@type": "City", name: ADDRESS.city },
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ],
+      opens: HOURS.opens,
+      closes: HOURS.closes,
+    },
+  ],
+  location: {
+    "@type": "Place",
+    name: `${BUSINESS_NAME}, ${ADDRESS_ONE_LINE}`,
+    description: LANDMARKS.join(". "),
+  },
+  paymentAccepted: "Cash, UPI, Debit Card, Credit Card, Bank Transfer",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en-IN"
+      id="top"
       className={`${archivo.variable} ${plexSans.variable} ${plexMono.variable}`}
     >
       <body className="flex min-h-dvh flex-col">
         <script
           type="application/ld+json"
-          // Structured data emits only verified fields — see lib/seo.ts.
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(dealerSchema(siteUrl)) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
-        <SmoothScroll />
-        <SkipLink />
-        <SiteHeader />
-        <main id="main" className="flex-1">
-          {children}
-        </main>
-        <Footer />
+        <MotionProvider>
+          <SmoothScroll />
+          <SkipLink />
+          <Header />
+          <main id="main" className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </MotionProvider>
       </body>
     </html>
   );
