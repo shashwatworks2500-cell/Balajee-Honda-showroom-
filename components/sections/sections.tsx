@@ -9,6 +9,7 @@ import {
   Wrench,
 } from "lucide-react";
 
+import { MapPanel } from "@/components/sections/map-panel";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/motion-kit";
 import { Spotlight } from "@/components/motion/spotlight";
 import { Button, Container, Eyebrow, Section, SectionHead } from "@/components/ui/kit";
@@ -19,7 +20,6 @@ import {
   CONTACT,
   HOURS,
   LANDMARKS,
-  MAP_EMBED,
   MAP_HREF,
   NOT_OFFERED,
   PAYMENT_METHODS,
@@ -244,21 +244,7 @@ export function Visit() {
               how people actually navigate the last hundred metres. */}
           <Reveal>
             <figure className="m-0 h-full">
-              <div className="relative overflow-hidden border border-hair bg-ink-2">
-                {/* Privacy extensions block Google embeds routinely. When that
-                    happens the iframe paints its own error page over this, so
-                    the fallback exists to make that page dark rather than a
-                    grey void — the address and directions are already to the
-                    left, so nothing load-bearing is lost. */}
-                <iframe
-                  src={MAP_EMBED}
-                  title={`Map showing ${BUSINESS_NAME}, ${ADDRESS.street}, ${ADDRESS.city}`}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  style={{ colorScheme: "dark" }}
-                  className="block h-[22rem] w-full border-0 lg:h-[30rem]"
-                />
-              </div>
+              <MapPanel />
 
               <figcaption className="mt-px grid gap-px bg-hair sm:grid-cols-2">
                 {LANDMARKS.map((landmark) => (

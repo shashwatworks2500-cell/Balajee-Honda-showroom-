@@ -64,14 +64,24 @@ export const MAP_HREF = `https://www.google.com/maps/search/?api=1&query=${encod
 /**
  * Embeddable map for the same address.
  *
- * Uses Google's keyless embed, which resolves the address itself — so this
- * stays correct without anyone minting an API key, and still contains no
- * invented coordinates. Swap in a place-ID embed later if you want the pin to
- * land on the exact shopfront.
+ * Points straight at /maps/embed rather than the friendlier /maps?q=…&output=embed
+ * form. That form answers with a 301 carrying `X-Frame-Options: SAMEORIGIN`,
+ * and browsers enforce that header on every hop of a redirect chain — so the
+ * frame is refused at the redirect, before reaching the destination, which
+ * itself sets no such header and frames fine. Going direct also saves a
+ * round trip.
+ *
+ * `pb` is Google's embed parameter: !1m3!2m1!1s<query> is a place lookup and
+ * !6i16 is the zoom level. Google resolves the address itself, so no API key
+ * is needed and no coordinates are invented here. Swap in a place-ID embed
+ * later if you want the pin on the exact shopfront.
  */
-export const MAP_EMBED = `https://www.google.com/maps?q=${encodeURIComponent(
-  `${BUSINESS_NAME}, ${ADDRESS_ONE_LINE}`,
-)}&output=embed`;
+const MAP_QUERY = encodeURIComponent(`${BUSINESS_NAME}, ${ADDRESS_ONE_LINE}`)
+  .replace(/%20/g, "+")
+  .replace(/%2C/g, ",")
+  .replace(/%2F/g, "/");
+
+export const MAP_EMBED = `https://www.google.com/maps/embed?origin=mfe&pb=!1m3!2m1!1s${MAP_QUERY}!6i16`;
 
 /* ---- hours -------------------------------------------------------- */
 
