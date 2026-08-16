@@ -2,7 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Archivo, IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 
-import { Footer, Header, SkipLink } from "@/components/layout/chrome";
+import { Footer } from "@/components/layout/chrome";
+import { Header, SkipLink } from "@/components/layout/header";
 import { MotionProvider } from "@/components/motion/motion-provider";
 import { SmoothScroll } from "@/components/motion/smooth-scroll";
 import {
@@ -63,7 +64,7 @@ export const metadata: Metadata = {
     siteName: BUSINESS_NAME,
     locale: "en_IN",
     type: "website",
-    images: [{ url: "/hero/hornet-headlight.jpg", width: 2000, height: 1250 }],
+    images: [{ url: "/hero/hornet-projectors.jpg", width: 2200, height: 1240 }],
   },
 };
 

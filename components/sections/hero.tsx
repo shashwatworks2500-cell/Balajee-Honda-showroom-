@@ -78,15 +78,15 @@ export function Hero() {
         className="absolute inset-0 -z-10"
       >
         <Image
-          src="/hero/hornet-headlight.jpg"
-          alt="Honda CB1000 Hornet SP, headlight cluster lit in low light"
+          src="/hero/hornet-projectors.jpg"
+          alt="Honda CB1000 Hornet SP — twin LED projector headlights lit"
           fill
           priority
           sizes="100vw"
           className="hidden object-cover object-center sm:block"
         />
         <Image
-          src="/hero/hornet-headlight-portrait.jpg"
+          src="/hero/hornet-projectors-portrait.jpg"
           alt=""
           fill
           priority
@@ -108,11 +108,11 @@ export function Hero() {
         {/* Legibility scrims. Directional — they clear the machine. */}
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-r from-void via-void/80 to-transparent sm:via-void/60 lg:via-transparent lg:from-void/95"
+          className="absolute inset-0 bg-gradient-to-r from-void via-void/85 to-void/10 lg:via-void/72"
         />
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-void via-void/70 to-transparent"
+          className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-void via-void/72 to-transparent"
         />
         <div
           aria-hidden="true"
