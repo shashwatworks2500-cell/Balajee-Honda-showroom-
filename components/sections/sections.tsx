@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 
 import { Parallax, Reveal, RevealGroup, RevealItem } from "@/components/motion/motion-kit";
+import { Spotlight } from "@/components/motion/spotlight";
 import { Button, Container, Eyebrow, Section, SectionHead } from "@/components/ui/kit";
 import {
   ADDRESS,
@@ -44,7 +45,13 @@ export function Services() {
         <RevealGroup className="mt-14 grid gap-px overflow-hidden border border-hair bg-hair sm:grid-cols-2 lg:grid-cols-3">
           {SERVICES.map((service) => (
             <RevealItem key={service.id} className="h-full">
-              <article className="group flex h-full flex-col bg-void p-7 transition-colors duration-300 hover:bg-ink-2">
+              <Spotlight className="h-full">
+                <article className="group relative flex h-full flex-col overflow-hidden bg-void p-7 transition-colors duration-300 hover:bg-ink-2">
+                  {/* Accent draws down the left edge on hover. */}
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-y-0 left-0 w-px origin-top scale-y-0 bg-signal transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:scale-y-100"
+                  />
                 <h3 className="t-h3 text-bright">{service.title}</h3>
                 <p className="mt-3 text-[0.9375rem] leading-relaxed text-mute">{service.body}</p>
                 <ul className="mt-5 space-y-2 border-t border-hair-2 pt-5">
@@ -58,7 +65,8 @@ export function Services() {
                     </li>
                   ))}
                 </ul>
-              </article>
+                </article>
+              </Spotlight>
             </RevealItem>
           ))}
         </RevealGroup>
@@ -99,8 +107,11 @@ export function Trust() {
                 { icon: BadgeCheck, k: "Status", v: "Authorised", s: "Honda dealer" },
               ].map((stat) => (
                 <RevealItem key={stat.k}>
-                  <div className="h-full bg-void p-6">
-                    <stat.icon aria-hidden="true" className="size-5 text-signal" />
+                  <div className="group h-full bg-void p-6 transition-colors duration-300 hover:bg-ink-2">
+                    <stat.icon
+                      aria-hidden="true"
+                      className="size-5 text-signal transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:scale-110 motion-reduce:transform-none"
+                    />
                     <p className="t-slug mt-4">{stat.k}</p>
                     <p className="t-data mt-1.5 text-[1.25rem] font-medium text-bright">{stat.v}</p>
                     <p className="t-data text-[0.75rem] text-faint">{stat.s}</p>
@@ -180,7 +191,7 @@ export function Visit() {
                 <dd className="t-data text-[0.9375rem]">
                   <a
                     href={CONTACT.phoneHref}
-                    className="inline-flex min-h-11 items-center text-bright hover:text-signal"
+                    className="link-sweep inline-flex min-h-11 items-center text-bright transition-colors hover:text-signal"
                   >
                     {CONTACT.phoneDisplay}
                   </a>
@@ -191,7 +202,7 @@ export function Visit() {
                 <dd className="t-data break-all text-[0.9375rem]">
                   <a
                     href={`mailto:${CONTACT.email}`}
-                    className="inline-flex min-h-11 items-center text-bright hover:text-signal"
+                    className="link-sweep inline-flex min-h-11 items-center text-bright transition-colors hover:text-signal"
                   >
                     {CONTACT.email}
                   </a>

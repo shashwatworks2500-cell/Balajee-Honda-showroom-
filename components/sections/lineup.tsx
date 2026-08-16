@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { ArrowUpRight, Phone } from "lucide-react";
 
 import { RevealItem, RevealGroup } from "@/components/motion/motion-kit";
+import { Spotlight } from "@/components/motion/spotlight";
 import { Button, Container, Section, SectionHead } from "@/components/ui/kit";
 import { modelKeySpecs } from "@/lib/format";
 import { MODELS } from "@/lib/models";
@@ -62,7 +63,7 @@ export function Lineup() {
                   aria-selected={active}
                   onClick={() => setFilter(chip.id)}
                   className={cn(
-                    "relative min-h-11 rounded-full px-5 text-[0.875rem] font-semibold transition-colors",
+                    "relative min-h-11 rounded-full px-5 text-[0.875rem] font-semibold transition-colors duration-300",
                     active ? "text-white" : "text-mute hover:text-bright",
                   )}
                 >
@@ -92,9 +93,11 @@ export function Lineup() {
                 transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                 className="group relative flex flex-col bg-ink transition-colors duration-300 hover:bg-ink-2"
               >
-                <RevealItem>
-                  <ModelCard model={model} />
-                </RevealItem>
+                <Spotlight className="h-full" tint="rgba(207,230,255,0.07)">
+                  <RevealItem className="h-full">
+                    <ModelCard model={model} />
+                  </RevealItem>
+                </Spotlight>
               </motion.div>
             ))}
           </AnimatePresence>
@@ -124,19 +127,19 @@ function ModelCard({ model }: { model: Model }) {
         {/* Pool of light under the machine, so it is standing on something. */}
         <div
           aria-hidden="true"
-          className="absolute inset-x-6 bottom-2 h-10 rounded-[50%] bg-white/[0.055] blur-xl"
+          className="absolute inset-x-6 bottom-2 h-10 rounded-[50%] bg-white/[0.055] blur-xl transition-all duration-500 ease-[var(--ease-out-expo)] group-hover:inset-x-4 group-hover:bg-white/[0.10]"
         />
         <Image
           src={cutoutSrc(model)}
           alt={`${model.name}, side profile`}
           fill
           sizes="(min-width:1024px) 30vw, (min-width:640px) 45vw, 90vw"
-          className="object-contain transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:scale-[1.04] motion-reduce:transform-none"
+          className="object-contain transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:-translate-y-1.5 group-hover:scale-[1.05] motion-reduce:transform-none"
         />
       </div>
 
       <p className="t-slug mt-5">{category?.labelSingular}</p>
-      <h3 className="t-h3 mt-2 text-bright">{model.name}</h3>
+      <h3 className="t-h3 mt-2 text-bright transition-colors duration-300 group-hover:text-white">{model.name}</h3>
 
       {specs.length > 0 ? (
         <dl className="mt-4 flex flex-wrap gap-x-6 gap-y-2 border-t border-hair-2 pt-4">

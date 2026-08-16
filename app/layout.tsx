@@ -3,7 +3,8 @@ import { Archivo, IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 
 import { Footer } from "@/components/layout/chrome";
-import { Header, SkipLink } from "@/components/layout/header";
+import { Header, MobileCallBar, SkipLink } from "@/components/layout/header";
+import { Cursor } from "@/components/motion/cursor";
 import { MotionProvider } from "@/components/motion/motion-provider";
 import { SmoothScroll } from "@/components/motion/smooth-scroll";
 import {
@@ -133,12 +134,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
         <MotionProvider>
           <SmoothScroll />
+          <Cursor />
           <SkipLink />
           <Header />
           <main id="main" className="flex-1">
             {children}
           </main>
           <Footer />
+          <MobileCallBar />
         </MotionProvider>
       </body>
     </html>

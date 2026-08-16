@@ -100,20 +100,27 @@ export function SectionHead({
 
 const button = cva(
   [
-    "group/btn relative inline-flex items-center justify-center gap-2.5 overflow-hidden",
+    "group/btn relative isolate inline-flex items-center justify-center gap-2.5 overflow-hidden",
     "rounded-[4px] border font-sans text-[0.9375rem] font-semibold leading-none",
     "cursor-pointer select-none no-underline",
-    "transition-[background-color,border-color,color] duration-200 ease-[var(--ease-out-expo)]",
+    "transition-[border-color,color,box-shadow,transform] duration-300 ease-[var(--ease-out-expo)]",
+    "active:translate-y-px",
     "disabled:pointer-events-none disabled:opacity-50",
   ],
   {
     variants: {
       variant: {
-        /* The buy-side action. Red fill, subtle lift on hover. */
-        primary: "border-transparent bg-signal text-white hover:bg-signal-deep",
+        /* Buy-side. A deeper red wipes across on hover and the lamp glow lifts. */
+        primary: [
+          "border-transparent bg-signal text-white",
+          "hover:shadow-[0_0_0_1px_rgba(224,25,51,0.5),0_10px_36px_-12px_rgba(224,25,51,0.85)]",
+        ],
         /* Sits on photography without fighting it. */
-        ghost: "border-hair bg-white/[0.03] text-bright hover:border-bright/60 hover:bg-white/[0.07]",
-        /* Quiet third option. */
+        ghost: [
+          "border-hair bg-white/[0.03] text-bright",
+          "hover:border-bright/50",
+        ],
+        /* Quiet third option: the rule draws itself in. */
         text: "border-transparent bg-transparent px-1 text-bright hover:text-signal",
       },
       size: {
@@ -125,6 +132,28 @@ const button = cva(
     defaultVariants: { variant: "primary", size: "default" },
   },
 );
+
+/** The wipe that runs under the label on hover. */
+function Sweep({ variant }: { variant?: "primary" | "ghost" | "text" | null }) {
+  if (variant === "text") {
+    return (
+      <span
+        aria-hidden="true"
+        className="absolute inset-x-1 bottom-0 h-px origin-left scale-x-0 bg-signal transition-transform duration-400 ease-[var(--ease-out-expo)] group-hover/btn:scale-x-100 motion-reduce:transition-none"
+      />
+    );
+  }
+  return (
+    <span
+      aria-hidden="true"
+      className={cn(
+        "absolute inset-0 -z-10 origin-left scale-x-0 transition-transform duration-400 ease-[var(--ease-out-expo)]",
+        "group-hover/btn:scale-x-100 motion-reduce:transition-none",
+        variant === "ghost" ? "bg-white/[0.09]" : "bg-signal-deep",
+      )}
+    />
+  );
+}
 
 type Base = VariantProps<typeof button> & { className?: string; children: React.ReactNode };
 
@@ -148,12 +177,14 @@ export function Button(props: ButtonProps) {
     if (external) {
       return (
         <a href={href} className={classes} {...rest}>
+          <Sweep variant={variant} />
           {children}
         </a>
       );
     }
     return (
       <Link href={href} className={classes} {...rest}>
+        <Sweep variant={variant} />
         {children}
       </Link>
     );
@@ -162,6 +193,7 @@ export function Button(props: ButtonProps) {
   const { variant, size, className, children, ...rest } = props;
   return (
     <button className={cn(button({ variant, size }), className)} {...rest}>
+      <Sweep variant={variant} />
       {children}
     </button>
   );

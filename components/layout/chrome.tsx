@@ -38,7 +38,7 @@ export function Footer() {
                 <li key={item.href}>
                   <a
                     href={item.href}
-                    className="inline-flex min-h-11 items-center text-[0.9375rem] text-mute transition-colors hover:text-bright"
+                    className="link-sweep inline-flex min-h-11 items-center text-[0.9375rem] text-mute transition-colors hover:text-bright"
                   >
                     {item.label}
                   </a>
@@ -53,7 +53,7 @@ export function Footer() {
               <li>
                 <a
                   href={CONTACT.phoneHref}
-                  className="t-data inline-flex min-h-11 items-center text-[0.9375rem] text-bright hover:text-signal"
+                  className="link-sweep t-data inline-flex min-h-11 items-center text-[0.9375rem] text-bright transition-colors hover:text-signal"
                 >
                   {CONTACT.phoneDisplay}
                 </a>
@@ -61,7 +61,7 @@ export function Footer() {
               <li>
                 <a
                   href={`mailto:${CONTACT.email}`}
-                  className="t-data inline-flex min-h-11 items-center break-all text-[0.875rem] text-mute hover:text-bright"
+                  className="link-sweep t-data inline-flex min-h-11 items-center break-all text-[0.875rem] text-mute transition-colors hover:text-bright"
                 >
                   {CONTACT.email}
                 </a>

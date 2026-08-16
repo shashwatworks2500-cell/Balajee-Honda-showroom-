@@ -297,3 +297,58 @@ export function Header() {
     </header>
   );
 }
+
+/**
+ * Mobile call bar.
+ *
+ * Phones are the majority here and calling is the conversion, so once the hero
+ * has scrolled away the two actions that matter stay within thumb reach. It is
+ * the only persistent floating element on the site, and it never appears on
+ * desktop, where the header already carries both.
+ */
+export function MobileCallBar() {
+  const [shown, setShown] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setShown(window.scrollY > window.innerHeight * 0.85);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <div
+      className={cn(
+        "fixed inset-x-0 bottom-0 z-40 border-t border-hair bg-void/95 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur-lg lg:hidden",
+        "transition-transform duration-500 ease-[var(--ease-out-expo)]",
+        shown ? "translate-y-0" : "translate-y-full",
+      )}
+      aria-hidden={!shown}
+    >
+      <div className="flex gap-3">
+        <Button
+          href={CONTACT.phoneHref}
+          external
+          size="block"
+          tabIndex={shown ? undefined : -1}
+        >
+          <Phone aria-hidden="true" className="size-4" />
+          Call now
+        </Button>
+        <Button
+          href={MAP_HREF}
+          external
+          target="_blank"
+          rel="noopener"
+          variant="ghost"
+          size="block"
+          tabIndex={shown ? undefined : -1}
+          className="max-w-[42%]"
+        >
+          <MapPin aria-hidden="true" className="size-4" />
+          Directions
+        </Button>
+      </div>
+    </div>
+  );
+}
