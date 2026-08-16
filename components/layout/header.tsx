@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion, useScroll, useSpring } from "motion/react";
 import { Dialog } from "radix-ui";
-import { Clock, MapPin, Menu, Phone, X } from "lucide-react";
+import { Clock, MapPin, MessageCircle, Menu, Phone, X } from "lucide-react";
 
 import { Button, Container, Logo } from "@/components/ui/kit";
 import {
@@ -15,6 +15,8 @@ import {
   HOURS,
   LANDMARKS,
   MAP_HREF,
+  WHATSAPP,
+  whatsappHref,
 } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -23,6 +25,7 @@ const NAV = [
   { label: "Services", href: "#services", id: "services" },
   { label: "Why us", href: "#why", id: "why" },
   { label: "Visit", href: "#visit", id: "visit" },
+  { label: "Enquire", href: "#enquire", id: "enquire" },
 ];
 
 /** First focusable element on the page. */
@@ -325,28 +328,46 @@ export function MobileCallBar() {
       )}
       aria-hidden={!shown}
     >
-      <div className="flex gap-3">
+      <div className="flex gap-2.5">
         <Button
           href={CONTACT.phoneHref}
           external
           size="block"
           tabIndex={shown ? undefined : -1}
+          className="whitespace-nowrap px-4 text-[0.875rem]"
         >
           <Phone aria-hidden="true" className="size-4" />
           Call now
         </Button>
+        {WHATSAPP ? (
+          <Button
+            href={whatsappHref() ?? "#"}
+            external
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="ghost"
+            size="block"
+            tabIndex={shown ? undefined : -1}
+            className="whitespace-nowrap px-4 text-[0.875rem]"
+          >
+            <MessageCircle aria-hidden="true" className="size-4" />
+            WhatsApp
+          </Button>
+        ) : null}
+        {/* Icon-only: three full labels will not fit a 360px phone, and the
+            Visit section carries a spelled-out Get directions button. */}
         <Button
           href={MAP_HREF}
           external
           target="_blank"
           rel="noopener"
           variant="ghost"
-          size="block"
+          size="compact"
+          aria-label="Directions to the showroom"
           tabIndex={shown ? undefined : -1}
-          className="max-w-[42%]"
+          className="shrink-0 px-4"
         >
           <MapPin aria-hidden="true" className="size-4" />
-          Directions
         </Button>
       </div>
     </div>

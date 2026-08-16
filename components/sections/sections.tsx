@@ -1,22 +1,11 @@
-import {
-  BadgeCheck,
-  Banknote,
-  Clock,
-  Mail,
-  MapPin,
-  Phone,
-  Star,
-  Wrench,
-} from "lucide-react";
+import { Banknote, MapPin, Phone, Wrench } from "lucide-react";
 
 import { MapPanel } from "@/components/sections/map-panel";
+import { MODELS } from "@/lib/models";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/motion-kit";
-import { Spotlight } from "@/components/motion/spotlight";
 import { Button, Container, Eyebrow, Section, SectionHead } from "@/components/ui/kit";
 import {
-  ADDRESS,
   ADDRESS_LINES,
-  BUSINESS_NAME,
   CONTACT,
   HOURS,
   LANDMARKS,
@@ -33,31 +22,58 @@ import {
 
 export function Services() {
   return (
-    <Section id="services" labelledBy="services-head" className="border-t border-hair-2 bg-ink">
+    /* The one light movement in the page. Placed at the centre of the scroll
+       so eight viewports of near-black are broken exactly where attention
+       starts to flatten — and this is the densest reading on the page, which
+       is easier on paper than on black. */
+    <Section id="services" labelledBy="services-head" className="on-paper">
       <Container>
-        <SectionHead
-          index="02"
-          eyebrow="Under one roof"
-          id="services-head"
-          title="Buy it, finance it, insure it, service it."
-          intro="Everything a two-wheeler needs over its life happens at the same counter on Station Road."
-        />
+        <div className="grid gap-8 lg:grid-cols-[6fr_5fr] lg:items-end lg:gap-20">
+          <SectionHead
+            index="02"
+            eyebrow="Under one roof"
+            id="services-head"
+            title={
+              <>
+                Buy it, finance it,
+                <br />
+                insure it, service it.
+              </>
+            }
+          />
+          {/* Balances the heading instead of leaving the right half empty. */}
+          <p className="measure text-[1.0625rem] leading-relaxed text-mute lg:pb-2">
+            Everything a two-wheeler needs over its life happens at the same counter on Station
+            Road — from the first test ride to the parts it wears through years later.
+          </p>
+        </div>
 
-        <RevealGroup className="mt-14 grid gap-px overflow-hidden border border-hair bg-hair sm:grid-cols-2 lg:grid-cols-3">
-          {SERVICES.map((service) => (
-            <RevealItem key={service.id} className="h-full">
-              <Spotlight className="h-full">
-                <article className="group relative flex h-full flex-col overflow-hidden bg-void p-7 transition-colors duration-300 hover:bg-ink-2">
-                  {/* Accent draws down the left edge on hover. */}
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-y-0 left-0 w-px origin-top scale-y-0 bg-signal transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:scale-y-100"
-                  />
-                <h3 className="t-h3 text-bright">{service.title}</h3>
-                <p className="mt-3 text-[0.9375rem] leading-relaxed text-mute">{service.body}</p>
-                <ul className="mt-5 space-y-2 border-t border-hair-2 pt-5">
+        {/* An indexed list, not a card grid. The numerals carry the rhythm. */}
+        <ol className="mt-16 border-b border-hair">
+          {SERVICES.map((service, i) => (
+            <RevealItem key={service.id}>
+              <li className="group grid gap-x-8 gap-y-4 border-t border-hair py-8 transition-colors duration-300 hover:bg-ink md:grid-cols-12 md:py-10">
+                <p
+                  aria-hidden="true"
+                  className="t-data col-span-1 text-[1.5rem] leading-none text-faint transition-colors duration-300 group-hover:text-signal md:text-[2rem]"
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </p>
+
+                <h3 className="t-h3 col-span-1 self-start text-[1.25rem] text-bright md:col-span-3">
+                  {service.title}
+                </h3>
+
+                <p className="col-span-1 text-[0.9375rem] leading-relaxed text-mute md:col-span-4">
+                  {service.body}
+                </p>
+
+                <ul className="col-span-1 flex flex-wrap gap-x-5 gap-y-2 md:col-span-4">
                   {service.points.map((point) => (
-                    <li key={point} className="flex items-start gap-2.5 text-[0.875rem] text-mute">
+                    <li
+                      key={point}
+                      className="flex items-start gap-2 text-[0.875rem] text-mute"
+                    >
                       <span
                         aria-hidden="true"
                         className="mt-[0.45rem] size-1 shrink-0 rounded-full bg-signal"
@@ -66,16 +82,15 @@ export function Services() {
                     </li>
                   ))}
                 </ul>
-                </article>
-              </Spotlight>
+              </li>
             </RevealItem>
           ))}
-        </RevealGroup>
+        </ol>
 
         {/* Said plainly so nobody drives over for something we don't do. */}
         <Reveal className="mt-8">
           <p className="t-data text-[0.8125rem] text-faint">
-            Not offered here: {NOT_OFFERED.join(" · ")}
+            Not offered here: {NOT_OFFERED.join(" \u00b7 ")}
           </p>
         </Reveal>
       </Container>
@@ -88,70 +103,88 @@ export function Services() {
 /* ------------------------------------------------------------------ */
 
 export function Trust() {
+  /* Every figure here is either published by someone else and attributed, or
+     a count of something on this page. Nothing is asserted about the business
+     that cannot be checked from the page itself. */
+  const figures = [
+    { value: RATING.value, label: `Rated on ${RATING.source}`, sub: `out of ${RATING.scale}` },
+    { value: "9\u20139", label: "Open every day", sub: HOURS.time },
+    { value: String(MODELS.length), label: "Honda models", sub: "in the range shown" },
+    { value: String(SERVICES.length), label: "Services", sub: "under one roof" },
+  ];
+
   return (
     <Section id="why" labelledBy="why-head" className="border-t border-hair-2">
       <Container>
-        <div className="grid gap-14 lg:grid-cols-[7fr_5fr] lg:gap-20">
-          <div>
-            <SectionHead
-              index="03"
-              eyebrow="Why here"
-              id="why-head"
-              title="An authorised dealer, not a middleman."
-              intro="Honda-trained staff, official parts, and the paperwork handled in the same building you bought the bike in."
-            />
-
-            <RevealGroup className="mt-12 grid gap-px overflow-hidden border border-hair bg-hair sm:grid-cols-3">
-              {[
-                { icon: Star, k: `${RATING.source} rating`, v: `${RATING.value}`, s: `out of ${RATING.scale}` },
-                { icon: Clock, k: "Open", v: HOURS.time, s: "every day" },
-                { icon: BadgeCheck, k: "Status", v: "Authorised", s: "Honda dealer" },
-              ].map((stat) => (
-                <RevealItem key={stat.k}>
-                  <div className="group h-full bg-void p-6 transition-colors duration-300 hover:bg-ink-2">
-                    <stat.icon
-                      aria-hidden="true"
-                      className="size-5 text-signal transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:scale-110 motion-reduce:transform-none"
-                    />
-                    <p className="t-slug mt-4">{stat.k}</p>
-                    <p className="t-data mt-1.5 text-[1.25rem] font-medium text-bright">{stat.v}</p>
-                    <p className="t-data text-[0.75rem] text-faint">{stat.s}</p>
-                  </div>
-                </RevealItem>
-              ))}
-            </RevealGroup>
-
-            <Reveal className="mt-8">
-              <p className="t-data text-[0.8125rem] text-faint">
-                Rating as published on {RATING.source}. Customers most often mention staff
-                knowledge and punctual service.
-              </p>
-            </Reveal>
-          </div>
-
-          {/* Payments — a real question for a walk-in customer. */}
-          <Reveal className="lg:pt-24">
-            <div className="border border-hair bg-ink p-7">
-              <Eyebrow>
-                <Banknote aria-hidden="true" className="size-4 text-signal" />
-                Ways to pay
-              </Eyebrow>
-              <ul className="mt-6 divide-y divide-hair-2">
-                {PAYMENT_METHODS.map((method) => (
-                  <li key={method} className="py-3 text-[0.9375rem] text-bright first:pt-0 last:pb-0">
-                    {method}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-6 flex items-center gap-3 border-t border-hair-2 pt-6">
-                <Wrench aria-hidden="true" className="size-4 shrink-0 text-faint" />
-                <p className="text-[0.875rem] text-mute">
-                  Service and genuine parts are billed at the same counter.
-                </p>
-              </div>
-            </div>
-          </Reveal>
+        <div className="max-w-4xl">
+          <Eyebrow index="03">Why here</Eyebrow>
+          {/* Set larger than the other section heads: this is the argument the
+              page is making, so it is allowed to be the loudest line on it. */}
+          <h2
+            id="why-head"
+            className="t-display mt-6 text-[clamp(2.25rem,5.4vw,4.25rem)] text-bright"
+          >
+            An authorised dealer,
+            <br />
+            <span className="text-mute">not a middleman.</span>
+          </h2>
+          <p className="measure mt-8 text-[1.125rem] leading-relaxed text-mute">
+            Honda-trained staff, official parts, and the paperwork handled in the same building
+            you bought the bike in.
+          </p>
         </div>
+
+        {/* Figures at display scale. The page has one other numeral treatment
+            and it is small and mono — this is deliberately the opposite. */}
+        <RevealGroup className="mt-20 grid gap-px bg-hair sm:grid-cols-2 lg:grid-cols-4">
+          {figures.map((figure) => (
+            <RevealItem key={figure.label}>
+              <div className="group h-full bg-void px-6 py-10 transition-colors duration-300 hover:bg-ink">
+                <p className="t-display text-[clamp(2.5rem,4.5vw,3.5rem)] text-bright transition-colors duration-300 group-hover:text-signal">
+                  {figure.value}
+                </p>
+                <p className="t-slug mt-5">{figure.label}</p>
+                <p className="t-data mt-1.5 text-[0.8125rem] text-faint">{figure.sub}</p>
+              </div>
+            </RevealItem>
+          ))}
+        </RevealGroup>
+
+        <Reveal className="mt-6">
+          <p className="t-data text-[0.8125rem] text-faint">
+            Rating as published on {RATING.source}. Customers most often mention staff knowledge
+            and punctual service.
+          </p>
+        </Reveal>
+
+        {/* Payments as a run of type rather than a boxed panel — it is a
+            footnote to the argument, not a third card grid. */}
+        <Reveal className="mt-16">
+          <div className="flex flex-col gap-5 border-t border-hair pt-8 md:flex-row md:items-baseline md:gap-10">
+            <Eyebrow className="shrink-0">
+              <Banknote aria-hidden="true" className="size-4 text-signal" />
+              Ways to pay
+            </Eyebrow>
+            <ul className="flex flex-wrap items-baseline gap-x-3 gap-y-2">
+              {PAYMENT_METHODS.map((method, i) => (
+                <li key={method} className="flex items-baseline gap-3 text-[1rem] text-bright">
+                  {i > 0 ? (
+                    <span aria-hidden="true" className="text-hair">
+                      /
+                    </span>
+                  ) : null}
+                  {method}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="mt-5 flex items-center gap-3">
+            <Wrench aria-hidden="true" className="size-4 shrink-0 text-faint" />
+            <p className="text-[0.875rem] text-mute">
+              Service and genuine parts are billed at the same counter.
+            </p>
+          </div>
+        </Reveal>
       </Container>
     </Section>
   );
@@ -259,56 +292,6 @@ export function Visit() {
               </figcaption>
             </figure>
           </Reveal>
-        </div>
-      </Container>
-    </Section>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* 05 — closing action                                                 */
-/* ------------------------------------------------------------------ */
-
-export function ClosingCta() {
-  return (
-    <Section id="contact" labelledBy="cta-head" className="relative overflow-hidden border-t border-hair-2">
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[radial-gradient(70%_60%_at_50%_0%,rgba(224,25,51,0.10),transparent_70%)]"
-      />
-      <Container>
-        <div className="mx-auto max-w-3xl text-center">
-          <Eyebrow index="05" className="justify-center">
-            Come and see it
-          </Eyebrow>
-          <h2 id="cta-head" className="t-h2 mt-6 text-bright">
-            The quickest way to buy a Honda in Hardoi is to walk in.
-          </h2>
-          <p className="measure mx-auto mt-5 text-[1.0625rem] text-mute">
-            We are open {HOURS.time.toLowerCase()}, every day. Call ahead and we will have the
-            model you want ready to ride.
-          </p>
-
-          <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
-            <Button href={CONTACT.phoneHref} external size="block" className="sm:w-auto">
-              <Phone aria-hidden="true" className="size-4" />
-              Call {CONTACT.phoneDisplay}
-            </Button>
-            <Button
-              href={`mailto:${CONTACT.email}`}
-              external
-              variant="ghost"
-              size="block"
-              className="sm:w-auto"
-            >
-              <Mail aria-hidden="true" className="size-4" />
-              Email us
-            </Button>
-          </div>
-
-          <p className="t-data mt-8 text-[0.8125rem] text-faint">
-            {HOURS.time} · {BUSINESS_NAME} · {ADDRESS.street}, {ADDRESS.city}
-          </p>
         </div>
       </Container>
     </Section>

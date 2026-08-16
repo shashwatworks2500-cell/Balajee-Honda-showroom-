@@ -56,6 +56,39 @@ export const CONTACT = {
   email: "balaji.autopointhdi@gmail.com",
 } as const;
 
+/**
+ * WhatsApp.
+ *
+ * ⚠ ASSUMPTION — CONFIRM WITH THE SHOWROOM. The number below is the verified
+ * showroom line. Most dealerships in this market run WhatsApp on that same
+ * number, but nobody has confirmed it for Balajee Honda.
+ *
+ *   - different number?  change `e164` and `display` here, nothing else.
+ *   - no WhatsApp at all? set this whole export to `null` and every WhatsApp
+ *     button, link and enquiry action disappears on its own.
+ */
+export const WHATSAPP: { e164: string; display: string } | null = {
+  e164: "919554113333",
+  display: "+91 95541 13333",
+};
+
+/** wa.me deep link, optionally carrying a pre-written first message. */
+export function whatsappHref(message?: string): string | null {
+  if (!WHATSAPP) return null;
+  const base = `https://wa.me/${WHATSAPP.e164}`;
+  return message ? `${base}?text=${encodeURIComponent(message)}` : base;
+}
+
+/** What a walk-in actually comes in asking about. Drawn from SERVICES below. */
+export const ENQUIRY_TOPICS = [
+  "Buying a new Honda",
+  "Finance / EMI",
+  "Exchange my old two-wheeler",
+  "Insurance",
+  "Service or repair",
+  "Parts & accessories",
+] as const;
+
 /** Maps search on the verified address. No coordinates are invented. */
 export const MAP_HREF = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
   `${BUSINESS_NAME}, ${ADDRESS_ONE_LINE}`,

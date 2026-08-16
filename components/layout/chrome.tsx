@@ -5,6 +5,8 @@ import {
   BUSINESS_NAME,
   CONTACT,
   HOURS,
+  WHATSAPP,
+  whatsappHref,
 } from "@/lib/site";
 
 const NAV = [
@@ -12,6 +14,7 @@ const NAV = [
   { label: "Services", href: "#services" },
   { label: "Why us", href: "#why" },
   { label: "Visit", href: "#visit" },
+  { label: "Enquire", href: "#enquire" },
 ];
 
 export function Footer() {
@@ -58,6 +61,18 @@ export function Footer() {
                   {CONTACT.phoneDisplay}
                 </a>
               </li>
+              {WHATSAPP ? (
+                <li>
+                  <a
+                    href={whatsappHref() ?? undefined}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="link-sweep t-data inline-flex min-h-11 items-center text-[0.9375rem] text-mute transition-colors hover:text-bright"
+                  >
+                    WhatsApp
+                  </a>
+                </li>
+              ) : null}
               <li>
                 <a
                   href={`mailto:${CONTACT.email}`}

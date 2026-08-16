@@ -122,6 +122,42 @@
     max-width: 62ch;
   }
 
+  /**
+   * One light movement in a dark page.
+   *
+   * Re-points the semantic tokens rather than restyling components, so every
+   * existing utility — bg-void, text-mute, border-hair — keeps working and
+   * simply resolves to the paper palette inside this scope.
+   *
+   * Values are contrast-checked against the paper ground: bright 15.9:1,
+   * mute 7.1:1, faint 4.7:1, signal 5.4:1 (and 6.1:1 under white, for the
+   * filled button). The stock red drops to 4.3:1 on paper, which is why the
+   * accent deepens here — same hue, legible on light.
+   */
+  .on-paper {
+    --color-void: #f4f1ec;
+    --color-ink: #eae6df;
+    --color-ink-2: #e3ded6;
+    --color-ink-3: #dad4ca;
+    --color-hair: #cec7bb;
+    --color-hair-2: #ded8ce;
+
+    --color-bright: #14181b;
+    --color-mute: #4a5257;
+    --color-faint: #656d72;
+
+    --color-signal: #c2142a;
+    --color-signal-deep: #8e0f1c;
+
+    background-color: var(--color-void);
+    color: var(--color-bright);
+  }
+
+  /* The lamp-blue ring vanishes on paper; focus goes dark here instead. */
+  .on-paper :focus-visible {
+    outline-color: #14181b;
+  }
+
   /* Hairline rule that fades at both ends — used between sections. */
   .rule-fade {
     height: 1px;
