@@ -79,15 +79,15 @@ export function Hero() {
         className="absolute inset-0 -z-10"
       >
         <Image
-          src="/hero/hornet-lamp.jpg"
-          alt="Honda CB1000 Hornet SP — LED projector headlight lit"
+          src="/hero/hornet-front.jpg"
+          alt="Honda Hornet, front on, headlights lit"
           fill
           priority
           sizes="100vw"
           className="hidden object-cover object-center sm:block"
         />
         <Image
-          src="/hero/hornet-lamp-portrait.jpg"
+          src="/hero/hornet-front-portrait.jpg"
           alt=""
           fill
           priority
@@ -103,14 +103,14 @@ export function Hero() {
             className="absolute inset-0 sm:hidden"
             style={{
               background:
-                "radial-gradient(46% 16% at 52% 30%, rgba(190,225,255,0.22), transparent 70%)",
+                "radial-gradient(40% 13% at 36% 29%, rgba(190,225,255,0.20), transparent 72%)",
             }}
           />
           <div
             className="absolute inset-0 hidden sm:block"
             style={{
               background:
-                "radial-gradient(30% 24% at 70% 46%, rgba(190,225,255,0.20), transparent 70%)",
+                "radial-gradient(22% 18% at 70% 55%, rgba(190,225,255,0.20), transparent 72%)",
             }}
           />
         </div>
@@ -122,7 +122,7 @@ export function Hero() {
             Portrait gets a vertical scrim; the horizontal one starts at sm. */}
         <div
           aria-hidden="true"
-          className="absolute inset-0 hidden bg-gradient-to-r from-void via-void/85 to-void/10 sm:block lg:via-void/72"
+          className="absolute inset-0 hidden bg-gradient-to-r from-void from-22% via-void/70 via-52% to-transparent sm:block lg:via-void/58"
         />
         <div
           aria-hidden="true"
