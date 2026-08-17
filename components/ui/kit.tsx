@@ -41,7 +41,12 @@ export function Section({
       ref={ref}
       id={id}
       aria-labelledby={labelledBy}
-      className={cn("relative py-24 lg:py-36", className)}
+      className={cn(
+        /* Anchor jumps must clear the fixed header — 64px condensed on a
+           phone, 72px above that — or the eyebrow lands underneath it. */
+        "relative scroll-mt-20 py-16 sm:scroll-mt-24 sm:py-24 lg:py-36",
+        className,
+      )}
     >
       {children}
     </section>

@@ -28,7 +28,7 @@ export function Services() {
        is easier on paper than on black. */
     <Section id="services" labelledBy="services-head" className="on-paper">
       <Container>
-        <div className="grid gap-8 lg:grid-cols-[6fr_5fr] lg:items-end lg:gap-20">
+        <div className="grid gap-5 sm:gap-8 lg:grid-cols-[6fr_5fr] lg:items-end lg:gap-20">
           <SectionHead
             index="02"
             eyebrow="Under one roof"
@@ -42,41 +42,45 @@ export function Services() {
             }
           />
           {/* Balances the heading instead of leaving the right half empty. */}
-          <p className="measure text-[1.0625rem] leading-relaxed text-mute lg:pb-2">
+          <p className="measure text-[0.9375rem] leading-relaxed text-mute sm:text-[1.0625rem] lg:pb-2">
             Everything a two-wheeler needs over its life happens at the same counter on Station
             Road — from the first test ride to the parts it wears through years later.
           </p>
         </div>
 
         {/* An indexed list, not a card grid. The numerals carry the rhythm. */}
-        <ol className="mt-16 border-b border-hair">
+        <ol className="mt-10 border-b border-hair sm:mt-16">
           {SERVICES.map((service, i) => (
             <RevealItem key={service.id}>
-              <li className="group grid gap-x-8 gap-y-4 border-t border-hair py-8 transition-colors duration-300 hover:bg-ink md:grid-cols-12 md:py-10">
+              {/* Two columns on a phone — numeral in the gutter, everything
+                  else indented under the title, so the row reads as one entry
+                  instead of four stacked blocks. The 12-column desktop row is
+                  unchanged; the explicit placements just reset at md. */}
+              <li className="group grid grid-cols-[2.25rem_1fr] gap-x-3 gap-y-2 border-t border-hair py-6 transition-colors duration-300 hover:bg-ink sm:py-8 md:grid-cols-12 md:gap-x-8 md:gap-y-4 md:py-10">
                 <p
                   aria-hidden="true"
-                  className="t-data col-span-1 text-[1.5rem] leading-none text-faint transition-colors duration-300 group-hover:text-signal md:text-[2rem]"
+                  className="t-data col-start-1 row-start-1 text-[1.125rem] leading-tight text-faint transition-colors duration-300 group-hover:text-signal md:col-auto md:row-auto md:col-span-1 md:text-[2rem] md:leading-none"
                 >
                   {String(i + 1).padStart(2, "0")}
                 </p>
 
-                <h3 className="t-h3 col-span-1 self-start text-[1.25rem] text-bright md:col-span-3">
+                <h3 className="t-h3 col-start-2 row-start-1 self-start text-[1.0625rem] text-bright sm:text-[1.25rem] md:col-auto md:row-auto md:col-span-3">
                   {service.title}
                 </h3>
 
-                <p className="col-span-1 text-[0.9375rem] leading-relaxed text-mute md:col-span-4">
+                <p className="col-start-2 row-start-2 text-[0.875rem] leading-relaxed text-mute sm:text-[0.9375rem] md:col-auto md:row-auto md:col-span-4">
                   {service.body}
                 </p>
 
-                <ul className="col-span-1 flex flex-wrap gap-x-5 gap-y-2 md:col-span-4">
+                <ul className="col-start-2 row-start-3 flex flex-wrap gap-x-4 gap-y-1.5 md:col-auto md:row-auto md:col-span-4 md:gap-x-5 md:gap-y-2">
                   {service.points.map((point) => (
                     <li
                       key={point}
-                      className="flex items-start gap-2 text-[0.875rem] text-mute"
+                      className="flex items-start gap-2 text-[0.8125rem] text-mute sm:text-[0.875rem]"
                     >
                       <span
                         aria-hidden="true"
-                        className="mt-[0.45rem] size-1 shrink-0 rounded-full bg-signal"
+                        className="mt-[0.4rem] size-1 shrink-0 rounded-full bg-signal sm:mt-[0.45rem]"
                       />
                       {point}
                     </li>
