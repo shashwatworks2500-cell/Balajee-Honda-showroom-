@@ -122,7 +122,7 @@ export function Lineup() {
                 </p>
               </div>
 
-              <div className="mt-px grid gap-px bg-hair sm:grid-cols-2 lg:grid-cols-3">
+              <div className="mt-px grid grid-cols-2 gap-px bg-hair lg:grid-cols-3">
                 <AnimatePresence mode="popLayout" initial={false}>
                   {group.models.map((model, i) => (
                     <motion.div
@@ -225,7 +225,7 @@ function ModelCard({ model }: { model: Model }) {
   const category = CATEGORIES.find((c) => c.id === model.category);
 
   return (
-    <article className="flex h-full flex-col p-6">
+    <article className="flex h-full flex-col p-4 sm:p-6">
       <div className="relative aspect-[16/10] overflow-hidden">
         {/* Pool of light under the machine, so it is standing on something. */}
         <div
@@ -241,27 +241,41 @@ function ModelCard({ model }: { model: Model }) {
         />
       </div>
 
-      <p className="t-slug mt-5">{category?.labelSingular}</p>
-      <h4 className="t-h3 mt-2 text-bright transition-colors duration-300 group-hover:text-white">
+      <p className="t-slug mt-4 sm:mt-5">{category?.labelSingular}</p>
+      {/* Two lines reserved in the narrow column: "Honda Activa 110" wraps
+          where "Honda Dio 110" does not, and without this the spec rows of a
+          side-by-side pair sit at different heights. */}
+      <h4 className="t-h3 mt-1.5 min-h-[2.5em] text-[0.9375rem] text-bright transition-colors duration-300 group-hover:text-white sm:mt-2 sm:min-h-0 sm:text-[1.125rem]">
         {model.name}
       </h4>
 
       {specs.length > 0 ? (
-        <dl className="mt-4 flex flex-wrap gap-x-6 gap-y-2 border-t border-hair-2 pt-4">
-          {specs.map((row) => (
-            <div key={row.label}>
+        <dl className="mt-3 flex flex-col gap-2 border-t border-hair-2 pt-3 sm:mt-4 sm:flex-row sm:flex-wrap sm:gap-x-6 sm:pt-4">
+          {specs.map((row, i) => (
+            <div
+              key={row.label}
+              /* Two columns leave roughly 107px of content at 320px, and
+                 "5.43 kW @ 7500 rpm" cannot be read in that. The headline
+                 figure stays; the rest waits for a wider screen. */
+              className={cn(i > 0 && "hidden sm:block")}
+            >
               <dt className="t-slug">{row.label}</dt>
-              <dd className="t-data mt-1 text-[0.875rem] text-bright">{row.value}</dd>
+              <dd className="t-data mt-1 text-[0.8125rem] text-bright sm:text-[0.875rem]">
+                {row.value}
+              </dd>
             </div>
           ))}
         </dl>
       ) : null}
 
-      <div className="mt-auto flex items-center gap-2 pt-6 text-[0.875rem] font-semibold text-mute transition-colors group-hover:text-bright">
-        Book a test ride
+      <div className="mt-auto flex items-center gap-1.5 pt-5 text-[0.8125rem] font-semibold text-mute transition-colors group-hover:text-bright sm:gap-2 sm:pt-6 sm:text-[0.875rem]">
+        {/* The full label wraps in a two-up column; the link's aria-label
+            still carries the whole thing for anyone not reading the page. */}
+        <span className="sm:hidden">Test ride</span>
+        <span className="hidden sm:inline">Book a test ride</span>
         <ArrowUpRight
           aria-hidden="true"
-          className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transform-none"
+          className="size-3.5 shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transform-none sm:size-4"
         />
       </div>
 
