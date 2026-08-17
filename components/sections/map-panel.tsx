@@ -110,7 +110,8 @@ export function MapPanel() {
         >
           <span className="flex items-center gap-2 border border-hair bg-void/90 px-4 py-2.5 text-[0.8125rem] font-semibold text-bright backdrop-blur-sm transition-transform duration-300 ease-[var(--ease-out-expo)] group-hover/map:-translate-y-0.5 motion-reduce:transform-none">
             <MapPin aria-hidden="true" className="size-4 text-signal" />
-            Click to explore the map
+            <span className="[@media(pointer:coarse)]:hidden">Click to explore the map</span>
+            <span className="hidden [@media(pointer:coarse)]:inline">Tap to explore the map</span>
           </span>
         </button>
       ) : null}

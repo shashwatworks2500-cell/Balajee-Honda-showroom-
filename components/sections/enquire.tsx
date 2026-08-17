@@ -210,7 +210,7 @@ export function Enquire() {
           Offset clears the fixed header. */}
       <span id={TEST_RIDE_HASH} aria-hidden="true" className="absolute -top-24" />
       <Container>
-        <div className="grid gap-14 lg:grid-cols-[5fr_7fr] lg:gap-20">
+        <div className="grid gap-10 sm:gap-14 lg:grid-cols-[5fr_7fr] lg:gap-20">
           {/* The ask, and the two ways to skip the form entirely. */}
           <div>
             <Eyebrow index="05">Tell us what you need</Eyebrow>
@@ -222,7 +222,7 @@ export function Enquire() {
               the bike — ready before you arrive.
             </p>
 
-            <div className="mt-10 space-y-px overflow-hidden border border-hair">
+            <div className="mt-8 space-y-px overflow-hidden border border-hair sm:mt-10">
               <a
                 href={CONTACT.phoneHref}
                 className="group flex min-h-16 items-center gap-4 bg-void px-6 transition-colors duration-300 hover:bg-ink-2"
@@ -263,9 +263,9 @@ export function Enquire() {
             <form
               noValidate
               onSubmit={(e) => e.preventDefault()}
-              className="border border-hair bg-void p-7 lg:p-9"
+              className="border border-hair bg-void p-5 sm:p-7 lg:p-9"
             >
-              <div className="grid gap-6 sm:grid-cols-2">
+              <div className="grid gap-5 sm:grid-cols-2 sm:gap-6">
                 <Field
                   id={`${formId}-name`}
                   label="Your name"

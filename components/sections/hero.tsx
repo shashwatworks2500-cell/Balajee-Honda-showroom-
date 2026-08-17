@@ -79,15 +79,15 @@ export function Hero() {
         className="absolute inset-0 -z-10"
       >
         <Image
-          src="/hero/hornet-projectors.jpg"
-          alt="Honda CB1000 Hornet SP — twin LED projector headlights lit"
+          src="/hero/hornet-lamp.jpg"
+          alt="Honda CB1000 Hornet SP — LED projector headlight lit"
           fill
           priority
           sizes="100vw"
           className="hidden object-cover object-center sm:block"
         />
         <Image
-          src="/hero/hornet-portrait-tall.jpg"
+          src="/hero/hornet-lamp-portrait.jpg"
           alt=""
           fill
           priority
@@ -95,16 +95,25 @@ export function Hero() {
           className="object-cover object-center sm:hidden"
         />
 
-        {/* Lamp bloom, brought up by the ignition timeline. */}
-        <div
-          ref={lamp}
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 opacity-0"
-          style={{
-            background:
-              "radial-gradient(38% 22% at 50% 62%, rgba(190,225,255,0.20), transparent 70%)",
-          }}
-        />
+        {/* Lamp bloom, brought up by the ignition timeline. One ref so GSAP
+            still drives a single element; the glow has to sit where the lamp
+            actually is, and that differs between the two crops. */}
+        <div ref={lamp} aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-0">
+          <div
+            className="absolute inset-0 sm:hidden"
+            style={{
+              background:
+                "radial-gradient(46% 16% at 52% 30%, rgba(190,225,255,0.22), transparent 70%)",
+            }}
+          />
+          <div
+            className="absolute inset-0 hidden sm:block"
+            style={{
+              background:
+                "radial-gradient(30% 24% at 70% 46%, rgba(190,225,255,0.20), transparent 70%)",
+            }}
+          />
+        </div>
 
         {/* Legibility scrims. Directional — they clear the machine.
             The direction has to change with the layout: on a phone the text

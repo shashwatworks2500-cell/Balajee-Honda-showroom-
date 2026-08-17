@@ -202,7 +202,7 @@ export function Visit() {
   return (
     <Section id="visit" labelledBy="visit-head" className="border-t border-hair-2 bg-ink">
       <Container>
-        <div className="grid gap-14 lg:grid-cols-[5fr_7fr] lg:gap-20">
+        <div className="grid gap-10 sm:gap-14 lg:grid-cols-[5fr_7fr] lg:gap-20">
           <div>
             <SectionHead
               index="04"
@@ -212,7 +212,7 @@ export function Visit() {
               intro="Opposite Police Lines, a minute from the State Bank of India main branch at Railway Ganj."
             />
 
-            <address className="mt-10 not-italic">
+            <address className="mt-8 not-italic sm:mt-10">
               <span className="t-slug">Showroom</span>
               <p className="t-data mt-3 text-[1.0625rem] leading-relaxed text-bright">
                 {ADDRESS_LINES.map((line) => (
@@ -224,8 +224,8 @@ export function Visit() {
             </address>
 
             <dl className="mt-8 divide-y divide-hair-2 border-y border-hair-2">
-              <div className="flex items-baseline gap-6 py-4">
-                <dt className="t-slug w-24 shrink-0">Phone</dt>
+              <div className="flex items-baseline gap-4 py-3.5 sm:gap-6 sm:py-4">
+                <dt className="t-slug w-20 shrink-0 sm:w-24">Phone</dt>
                 <dd className="t-data text-[0.9375rem]">
                   <a
                     href={CONTACT.phoneHref}
@@ -235,8 +235,8 @@ export function Visit() {
                   </a>
                 </dd>
               </div>
-              <div className="flex items-baseline gap-6 py-4">
-                <dt className="t-slug w-24 shrink-0">Email</dt>
+              <div className="flex items-baseline gap-4 py-3.5 sm:gap-6 sm:py-4">
+                <dt className="t-slug w-20 shrink-0 sm:w-24">Email</dt>
                 <dd className="t-data text-[0.9375rem]">
                   <a
                     href={`mailto:${CONTACT.email}`}
@@ -250,8 +250,8 @@ export function Visit() {
                   </a>
                 </dd>
               </div>
-              <div className="flex items-baseline gap-6 py-4">
-                <dt className="t-slug w-24 shrink-0">Hours</dt>
+              <div className="flex items-baseline gap-4 py-3.5 sm:gap-6 sm:py-4">
+                <dt className="t-slug w-20 shrink-0 sm:w-24">Hours</dt>
                 <dd className="t-data text-[0.9375rem] text-bright">
                   {HOURS.time}
                   <span className="block text-[0.8125rem] text-faint">{HOURS.summary}</span>
