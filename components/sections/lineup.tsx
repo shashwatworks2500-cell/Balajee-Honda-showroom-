@@ -3,14 +3,14 @@
 import Image from "next/image";
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowUpRight, Phone } from "lucide-react";
+import { ArrowUpRight, CalendarCheck, Phone } from "lucide-react";
 
 import { Spotlight } from "@/components/motion/spotlight";
 import { Button, Container, Section, SectionHead } from "@/components/ui/kit";
 import { modelKeySpecs } from "@/lib/format";
 import { getShowcase, groupByTier } from "@/lib/lineup";
 import { MODELS } from "@/lib/models";
-import { AVAILABILITY_NOTE, CATEGORIES, CONTACT } from "@/lib/site";
+import { AVAILABILITY_NOTE, CATEGORIES, CONTACT, TEST_RIDE_HASH } from "@/lib/site";
 import type { Category, Model } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -209,9 +209,9 @@ function Showcase() {
           ) : null}
 
           <div className="mt-8">
-            <Button href={CONTACT.phoneHref} external size="compact">
-              <Phone aria-hidden="true" className="size-4" />
-              Ask about the {model.name.replace(/^Honda /, "")}
+            <Button href={`#${TEST_RIDE_HASH}--${model.slug}`} size="compact">
+              <CalendarCheck aria-hidden="true" className="size-4" />
+              Book a test ride
             </Button>
           </div>
         </div>
@@ -258,7 +258,7 @@ function ModelCard({ model }: { model: Model }) {
       ) : null}
 
       <div className="mt-auto flex items-center gap-2 pt-6 text-[0.875rem] font-semibold text-mute transition-colors group-hover:text-bright">
-        Ask about this model
+        Book a test ride
         <ArrowUpRight
           aria-hidden="true"
           className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transform-none"
@@ -267,11 +267,11 @@ function ModelCard({ model }: { model: Model }) {
 
       {/* One link covers the card; the label above is its visible affordance. */}
       <a
-        href={CONTACT.phoneHref}
+        href={`#${TEST_RIDE_HASH}--${model.slug}`}
         className="absolute inset-0"
-        aria-label={`Call ${CONTACT.phoneDisplay} about the ${model.name}`}
+        aria-label={`Book a test ride on the ${model.name}`}
       >
-        <span className="sr-only">Call about the {model.name}</span>
+        <span className="sr-only">Book a test ride on the {model.name}</span>
       </a>
     </article>
   );

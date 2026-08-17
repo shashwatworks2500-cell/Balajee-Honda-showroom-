@@ -1,7 +1,7 @@
 "use client";
 
-import { useId, useState } from "react";
-import { Mail, MessageCircle, Phone } from "lucide-react";
+import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
+import { CalendarCheck, Mail, MessageCircle, Phone } from "lucide-react";
 
 import { Reveal } from "@/components/motion/motion-kit";
 import { Button, Container, Eyebrow, Section } from "@/components/ui/kit";
@@ -12,6 +12,9 @@ import {
   CONTACT,
   ENQUIRY_TOPICS,
   HOURS,
+  TEST_RIDE_HASH,
+  TEST_RIDE_TOPIC,
+  VISIT_SLOTS,
   WHATSAPP,
   whatsappHref,
 } from "@/lib/site";
@@ -31,16 +34,45 @@ import { cn } from "@/lib/utils";
  */
 
 const NOT_DECIDED = "Not decided yet";
+const DEFAULT_TOPIC = ENQUIRY_TOPICS[1];
 
 interface Fields {
   name: string;
   phone: string;
   topic: string;
   model: string;
+  day: string;
+  slot: string;
   message: string;
 }
 
-type Errors = Partial<Record<"name" | "phone", string>>;
+type Errors = Partial<Record<"name" | "phone" | "day", string>>;
+
+/**
+ * `#test-ride` opens the form asking for a ride; `#test-ride--sp-125` also
+ * names the machine. Read from the URL rather than held in a store so the
+ * link is shareable and survives a reload.
+ */
+function parseHash(hash: string): { topic?: string; model?: string } {
+  const raw = hash.replace(/^#/, "");
+  if (!raw.startsWith(TEST_RIDE_HASH)) return {};
+  const slug = raw.slice(TEST_RIDE_HASH.length).replace(/^--/, "");
+  const model = slug ? MODELS.find((m) => m.slug === slug) : undefined;
+  return { topic: TEST_RIDE_TOPIC, model: model?.name };
+}
+
+/** Subscribes to the hash instead of syncing it into state in an effect,
+ *  which would both trip the lint rule and mismatch on hydration. */
+function useHash(): string {
+  return useSyncExternalStore(
+    (onChange) => {
+      window.addEventListener("hashchange", onChange);
+      return () => window.removeEventListener("hashchange", onChange);
+    },
+    () => window.location.hash,
+    () => "",
+  );
+}
 
 /** Ten digits, optionally with +91, spaces or dashes in between. */
 function normalisePhone(input: string): string | null {
@@ -55,7 +87,27 @@ function validate(fields: Fields): Errors {
   if (!normalisePhone(fields.phone)) {
     errors.phone = "Please enter a 10-digit mobile number.";
   }
+  // Optional, but a date already gone is a typo rather than a request.
+  if (fields.day) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const chosen = new Date(`${fields.day}T00:00:00`);
+    if (Number.isNaN(chosen.getTime())) errors.day = "That date does not look right.";
+    else if (chosen < today) errors.day = "Please pick today or a later date.";
+  }
   return errors;
+}
+
+/** "2026-08-20" as the showroom would read it back. */
+function readableDay(value: string): string {
+  const date = new Date(`${value}T00:00:00`);
+  return Number.isNaN(date.getTime())
+    ? value
+    : date.toLocaleDateString("en-IN", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+      });
 }
 
 function compose(fields: Fields): string {
@@ -67,25 +119,58 @@ function compose(fields: Fields): string {
     `About: ${fields.topic}`,
   ];
   if (fields.model !== NOT_DECIDED) lines.push(`Model: ${fields.model}`);
+  if (fields.topic === TEST_RIDE_TOPIC) {
+    if (fields.day) lines.push(`Preferred day: ${readableDay(fields.day)}`);
+    if (fields.slot) lines.push(`Preferred time: ${fields.slot}`);
+  }
   if (fields.message.trim()) lines.push("", fields.message.trim());
   return lines.join("\n");
 }
 
 export function Enquire() {
   const formId = useId();
-  const [fields, setFields] = useState<Fields>({
+  const sectionRef = useRef<HTMLElement>(null);
+  const hash = useHash();
+  const fromHash = parseHash(hash);
+
+  const [entered, setEntered] = useState({
     name: "",
     phone: "",
-    topic: ENQUIRY_TOPICS[0],
-    model: NOT_DECIDED,
+    day: "",
+    slot: "",
     message: "",
   });
+  /**
+   * Topic and model come from the hash unless the visitor has picked
+   * something else. The choice is keyed to the hash it was made under, so
+   * arriving from a different model's button re-applies rather than being
+   * silently overridden by an earlier pick.
+   */
+  const [picked, setPicked] = useState<{ hash: string; topic?: string; model?: string }>({
+    hash: "",
+  });
+  const active = picked.hash === hash ? picked : { hash };
+
+  const fields: Fields = {
+    ...entered,
+    topic: active.topic ?? fromHash.topic ?? DEFAULT_TOPIC,
+    model: active.model ?? fromHash.model ?? NOT_DECIDED,
+  };
+  const bookingRide = fields.topic === TEST_RIDE_TOPIC;
+
   const [errors, setErrors] = useState<Errors>({});
   const [handedOff, setHandedOff] = useState<"whatsapp" | "email" | null>(null);
 
-  const set = <K extends keyof Fields>(key: K, value: Fields[K]) => {
-    setFields((prev) => ({ ...prev, [key]: value }));
-    if (key === "name" || key === "phone") {
+  /* `#test-ride--<slug>` matches no element id, so the browser will not scroll
+     to it on its own. Only the scroll happens here — no state is synced. */
+  useEffect(() => {
+    if (!hash.replace(/^#/, "").startsWith(`${TEST_RIDE_HASH}--`)) return;
+    sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [hash]);
+
+  const set = <K extends keyof typeof entered>(key: K, value: string) => {
+    setEntered((prev) => ({ ...prev, [key]: value }));
+    if (key === "name" || key === "phone" || key === "day") {
       setErrors((prev) => ({ ...prev, [key]: undefined }));
     }
   };
@@ -94,7 +179,8 @@ export function Enquire() {
     const found = validate(fields);
     setErrors(found);
     if (Object.keys(found).length > 0) {
-      document.getElementById(`${formId}-${found.name ? "name" : "phone"}`)?.focus();
+      const first = found.name ? "name" : found.phone ? "phone" : "day";
+      document.getElementById(`${formId}-${first}`)?.focus();
       return;
     }
 
@@ -114,18 +200,26 @@ export function Enquire() {
   };
 
   return (
-    <Section id="enquire" labelledBy="enquire-head" className="border-t border-hair-2 bg-ink">
+    <Section
+      ref={sectionRef}
+      id="enquire"
+      labelledBy="enquire-head"
+      className="border-t border-hair-2 bg-ink"
+    >
+      {/* Real anchor, so #test-ride scrolls here even with JS unavailable.
+          Offset clears the fixed header. */}
+      <span id={TEST_RIDE_HASH} aria-hidden="true" className="absolute -top-24" />
       <Container>
         <div className="grid gap-14 lg:grid-cols-[5fr_7fr] lg:gap-20">
           {/* The ask, and the two ways to skip the form entirely. */}
           <div>
             <Eyebrow index="05">Tell us what you need</Eyebrow>
             <h2 id="enquire-head" className="t-h2 mt-6 text-bright">
-              Send it across before you ride over.
+              Book a test ride, or just ask.
             </h2>
             <p className="measure mt-5 text-[1.0625rem] text-mute">
-              Tell us the model and what you need it for, and the showroom can have the answer —
-              and the bike — ready when you arrive.
+              Tell us the model and when suits you, and the showroom can have the answer — and
+              the bike — ready before you arrive.
             </p>
 
             <div className="mt-10 space-y-px overflow-hidden border border-hair">
@@ -217,7 +311,7 @@ export function Enquire() {
                     id={`${formId}-topic`}
                     name="topic"
                     value={fields.topic}
-                    onChange={(e) => set("topic", e.target.value)}
+                    onChange={(e) => setPicked({ ...active, hash, topic: e.target.value })}
                     className={inputClass(false)}
                   >
                     {ENQUIRY_TOPICS.map((topic) => (
@@ -233,7 +327,7 @@ export function Enquire() {
                     id={`${formId}-model`}
                     name="model"
                     value={fields.model}
-                    onChange={(e) => set("model", e.target.value)}
+                    onChange={(e) => setPicked({ ...active, hash, model: e.target.value })}
                     className={inputClass(false)}
                   >
                     <option value={NOT_DECIDED}>{NOT_DECIDED}</option>
@@ -244,6 +338,45 @@ export function Enquire() {
                     ))}
                   </select>
                 </Field>
+
+                {/* Only asked for when it is actually relevant. */}
+                {bookingRide ? (
+                  <>
+                    <Field
+                      id={`${formId}-day`}
+                      label="Preferred day (optional)"
+                      error={errors.day}
+                    >
+                      <input
+                        id={`${formId}-day`}
+                        name="day"
+                        type="date"
+                        value={entered.day}
+                        onChange={(e) => set("day", e.target.value)}
+                        aria-invalid={Boolean(errors.day)}
+                        aria-describedby={errors.day ? `${formId}-day-error` : undefined}
+                        className={inputClass(Boolean(errors.day))}
+                      />
+                    </Field>
+
+                    <Field id={`${formId}-slot`} label="Preferred time (optional)">
+                      <select
+                        id={`${formId}-slot`}
+                        name="slot"
+                        value={entered.slot}
+                        onChange={(e) => set("slot", e.target.value)}
+                        className={inputClass(false)}
+                      >
+                        <option value="">Any time</option>
+                        {VISIT_SLOTS.map((slot) => (
+                          <option key={slot} value={slot}>
+                            {slot}
+                          </option>
+                        ))}
+                      </select>
+                    </Field>
+                  </>
+                ) : null}
 
                 <div className="sm:col-span-2">
                   <Field id={`${formId}-message`} label="Anything else? (optional)">
@@ -262,8 +395,12 @@ export function Enquire() {
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 {WHATSAPP ? (
                   <Button size="block" className="sm:w-auto" onClick={() => send("whatsapp")}>
-                    <MessageCircle aria-hidden="true" className="size-4" />
-                    Send on WhatsApp
+                    {bookingRide ? (
+                      <CalendarCheck aria-hidden="true" className="size-4" />
+                    ) : (
+                      <MessageCircle aria-hidden="true" className="size-4" />
+                    )}
+                    {bookingRide ? "Request on WhatsApp" : "Send on WhatsApp"}
                   </Button>
                 ) : null}
                 <Button
@@ -279,8 +416,9 @@ export function Enquire() {
 
               {/* Worth saying before someone types their number in. */}
               <p className="t-data mt-6 text-[0.75rem] leading-relaxed text-faint">
-                This fills in a WhatsApp or email message for you to send — nothing is submitted
-                to or stored on this site.
+                {bookingRide
+                  ? "This fills in a WhatsApp or email message for you to send. The showroom confirms the slot and which bikes are free to ride — nothing is booked or stored by this site."
+                  : "This fills in a WhatsApp or email message for you to send — nothing is submitted to or stored on this site."}
               </p>
 
               <p role="status" aria-live="polite" className="sr-only">

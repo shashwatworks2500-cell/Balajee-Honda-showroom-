@@ -3,11 +3,12 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
-import { ArrowDown, Phone } from "lucide-react";
+import { ArrowDown, CalendarCheck } from "lucide-react";
 
 import { Magnetic, SplitHeading } from "@/components/motion/motion-kit";
 import { Button, Container } from "@/components/ui/kit";
-import { ADDRESS, CONTACT, HOURS, RATING } from "@/lib/site";
+import { ADDRESS, HOURS, RATING, TEST_RIDE_HASH } from "@/lib/site";
+import { cn } from "@/lib/utils";
 
 /**
  * Hero.
@@ -86,7 +87,7 @@ export function Hero() {
           className="hidden object-cover object-center sm:block"
         />
         <Image
-          src="/hero/hornet-projectors-portrait.jpg"
+          src="/hero/hornet-portrait-tall.jpg"
           alt=""
           fill
           priority
@@ -105,22 +106,29 @@ export function Hero() {
           }}
         />
 
-        {/* Legibility scrims. Directional — they clear the machine. */}
+        {/* Legibility scrims. Directional — they clear the machine.
+            The direction has to change with the layout: on a phone the text
+            sits at the bottom, so a left-to-right scrim tuned for the desktop
+            column blacked out the whole frame and the machine disappeared.
+            Portrait gets a vertical scrim; the horizontal one starts at sm. */}
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-r from-void via-void/85 to-void/10 lg:via-void/72"
+          className="absolute inset-0 hidden bg-gradient-to-r from-void via-void/85 to-void/10 sm:block lg:via-void/72"
         />
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-void via-void/72 to-transparent"
+          className="absolute inset-x-0 bottom-0 h-[72%] bg-gradient-to-t from-void via-void/80 to-transparent sm:h-2/3 sm:via-void/72"
         />
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-void/90 to-transparent"
+          className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-void/85 to-transparent sm:h-32 sm:from-void/90"
         />
       </motion.div>
 
-      <Container className="relative flex min-h-[100svh] flex-col justify-end pb-12 pt-32 lg:pb-16">
+      {/* Padding is far tighter on a phone: at 320x568 the desktop rhythm made
+          this hero 935px tall, so the actions and every fact sat below the
+          fold and the first screen was a headline and nothing else. */}
+      <Container className="relative flex min-h-[100svh] flex-col justify-end pb-8 pt-24 sm:pb-12 sm:pt-32 lg:pb-16">
         <div className="lg:max-w-[58%]">
         <motion.div style={{ y: contentY, opacity: fade }}>
           <motion.p
@@ -134,35 +142,44 @@ export function Hero() {
             <span aria-hidden="true" className="text-faint">
               ·
             </span>
-            {ADDRESS.city}, {ADDRESS.state}
+            {/* The state pushed this to two lines on a 320px phone. */}
+            <span className="hidden sm:inline">
+              {ADDRESS.city}, {ADDRESS.state}
+            </span>
+            <span className="sm:hidden">{ADDRESS.city}</span>
           </motion.p>
 
+          {/* Floor lowered to 2rem and the vw term raised, so the line breaks
+              in two on a phone instead of three. */}
           <SplitHeading
             text="Ride out of Station Road."
             delay={0.45}
-            className="t-display mt-6 max-w-[13ch] text-[clamp(2.6rem,7vw,5.6rem)] text-bright"
+            className="t-display mt-4 max-w-[13ch] text-[clamp(2rem,8.5vw,5.6rem)] text-bright sm:mt-6"
           />
 
           <motion.p
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.15, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="measure mt-7 text-[1.0625rem] text-mute sm:text-[1.125rem]"
+            className="measure mt-4 max-w-[38ch] text-[0.9375rem] leading-relaxed text-mute sm:mt-7 sm:max-w-none sm:text-[1.125rem]"
           >
             Honda motorcycles and scooters, sold and serviced under one roof — with
             finance, insurance, exchange and genuine parts handled at the counter.
           </motion.p>
 
+          {/* Booking a ride leads. Calling is one thumb away at all times —
+              the sticky bar on mobile, the header on desktop — so spending the
+              primary slot on it again would waste the loudest button here. */}
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center"
+            className="mt-6 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:items-center"
           >
             <Magnetic>
-              <Button href={CONTACT.phoneHref} external size="block" className="sm:w-auto">
-                <Phone aria-hidden="true" className="size-4" />
-                Call {CONTACT.phoneDisplay}
+              <Button href={`#${TEST_RIDE_HASH}`} size="block" className="sm:w-auto">
+                <CalendarCheck aria-hidden="true" className="size-4" />
+                Book a test ride
               </Button>
             </Magnetic>
             <Button href="#lineup" variant="ghost" size="block" className="sm:w-auto">
@@ -170,24 +187,39 @@ export function Hero() {
             </Button>
           </motion.div>
 
-          {/* The three facts worth knowing before you scroll. */}
+          {/* The facts worth knowing before you scroll. The landmark is the
+              first thing in the Visit section and in the header strip, so on a
+              phone it steps aside rather than costing a second row here. */}
           <motion.dl
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.5, duration: 0.9 }}
-            className="mt-14 grid max-w-3xl grid-cols-2 gap-px overflow-hidden border-y border-hair bg-hair sm:grid-cols-3"
+            /* Short viewports (an SE at 568px) cannot carry these and the
+               actions in one screen. Height is the real constraint here, not
+               width, so the query is on height — and the same facts are in the
+               header strip and the Visit section either way. */
+            className="mt-8 grid max-w-3xl grid-cols-2 gap-px overflow-hidden border-y border-hair bg-hair [@media(max-height:620px)]:hidden sm:mt-14 sm:grid-cols-3"
           >
             {[
-              { k: HOURS.summary, v: HOURS.time },
-              { k: `Rated on ${RATING.source}`, v: `${RATING.value} / ${RATING.scale}` },
-              { k: "Landmark", v: "Opposite Police Lines" },
+              { k: HOURS.summary, v: HOURS.time, small: true },
+              {
+                k: `Rated on ${RATING.source}`,
+                v: `${RATING.value} / ${RATING.scale}`,
+                small: true,
+              },
+              { k: "Landmark", v: "Opposite Police Lines", small: false },
             ].map((item) => (
               <div
                 key={item.k}
-                className="bg-void/80 px-4 py-4 backdrop-blur-[2px] last:col-span-2 sm:last:col-span-1"
+                className={cn(
+                  "bg-void/80 px-4 py-3 backdrop-blur-[2px] sm:py-4",
+                  item.small ? "" : "hidden sm:block",
+                )}
               >
                 <dt className="t-slug">{item.k}</dt>
-                <dd className="t-data mt-1.5 text-[0.9375rem] text-bright">{item.v}</dd>
+                <dd className="t-data mt-1 text-[0.8125rem] text-bright sm:mt-1.5 sm:text-[0.9375rem]">
+                  {item.v}
+                </dd>
               </div>
             ))}
           </motion.dl>

@@ -97,7 +97,7 @@ export function Header() {
         aria-hidden={condensed}
       >
         <Container>
-          <div className="flex h-10 items-center justify-between gap-6">
+          <div className="hidden h-10 items-center justify-between gap-6 sm:flex">
             <p className="t-data flex items-center gap-2 truncate text-[0.75rem] text-mute">
               <Clock aria-hidden="true" className="size-3.5 shrink-0 text-signal" />
               <span className="truncate">
@@ -133,7 +133,7 @@ export function Header() {
           <div
             className={cn(
               "flex items-center justify-between gap-6 transition-[height] duration-500 ease-[var(--ease-out-expo)]",
-              condensed ? "h-[4.5rem]" : "h-24",
+              condensed ? "h-16 sm:h-[4.5rem]" : "h-[4.5rem] sm:h-24",
             )}
           >
             <a
@@ -141,7 +141,7 @@ export function Header() {
               aria-label={`${BUSINESS_NAME} — top of page`}
               className="flex min-h-11 shrink-0 items-center"
             >
-              <Logo height={condensed ? 36 : 46} className="transition-all duration-500" />
+              <Logo height={condensed ? 32 : 38} className="transition-all duration-500" />
             </a>
 
             <nav aria-label="Primary" className="hidden lg:block">

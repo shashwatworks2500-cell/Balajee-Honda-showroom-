@@ -79,14 +79,36 @@ export function whatsappHref(message?: string): string | null {
   return message ? `${base}?text=${encodeURIComponent(message)}` : base;
 }
 
+/**
+ * Test rides are already a stated part of what the showroom does (see the
+ * "New Honda sales" service below), so asking for one is a real action rather
+ * than a promise this site is inventing.
+ */
+export const TEST_RIDE_TOPIC = "Book a test ride";
+
+/** Anchor the test-ride buttons point at. A model may follow: `#test-ride--sp-125`. */
+export const TEST_RIDE_HASH = "test-ride";
+
 /** What a walk-in actually comes in asking about. Drawn from SERVICES below. */
 export const ENQUIRY_TOPICS = [
+  TEST_RIDE_TOPIC,
   "Buying a new Honda",
   "Finance / EMI",
   "Exchange my old two-wheeler",
   "Insurance",
   "Service or repair",
   "Parts & accessories",
+] as const;
+
+/**
+ * Rough windows within the verified opening hours, so a test-ride request can
+ * say when without this site pretending to know what the diary looks like.
+ * The showroom confirms — the form says so.
+ */
+export const VISIT_SLOTS = [
+  "Morning (9 AM – 12 PM)",
+  "Afternoon (12 – 5 PM)",
+  "Evening (5 – 9 PM)",
 ] as const;
 
 /** Maps search on the verified address. No coordinates are invented. */

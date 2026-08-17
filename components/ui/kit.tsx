@@ -28,14 +28,17 @@ export function Section({
   className,
   children,
   labelledBy,
+  ref,
 }: {
   id?: string;
   className?: string;
   children: React.ReactNode;
   labelledBy?: string;
+  ref?: React.Ref<HTMLElement>;
 }) {
   return (
     <section
+      ref={ref}
       id={id}
       aria-labelledby={labelledBy}
       className={cn("relative py-24 lg:py-36", className)}
